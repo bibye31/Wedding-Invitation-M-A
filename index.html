@@ -3,1516 +3,1577 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Undangan Pernikahan - Muhammad Habiby & Amanda Putri Salsabila</title>
+    <title>SeminarPro | Sistem Manajemen Seminar Professional</title>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --gold: #D4AF37;
-            --gold-light: #F4E4A6;
-            --gold-dark: #B8860B;
-            --navy: #0A1F44;
-            --navy-light: #1A2F5C;
-            --navy-transparent: rgba(10, 31, 68, 0.85);
-            --white: #F8F8F8;
-            --cream: #FAF3E0;
-            --red: #8B0000;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
         }
 
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', sans-serif;
+            color: #334155;
+            background-color: #f8fafc;
             line-height: 1.6;
-            color: var(--white);
-            background-color: var(--navy);
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 30px;
-        }
-
-        /* Pelaminan Background */
-        .pelaminan-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: 
-                linear-gradient(rgba(10, 31, 68, 0.85), rgba(10, 31, 68, 0.9)),
-                url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-
-        .pelaminan-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at center, transparent 30%, var(--navy-transparent) 70%),
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(212, 175, 55, 0.03) 2px,
-                    rgba(212, 175, 55, 0.03) 4px
-                );
-            z-index: -1;
-        }
-
-        .pelaminan-decoration {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .pelaminan-curtain {
-            position: absolute;
-            top: 0;
-            width: 25%;
-            height: 100%;
-            background: linear-gradient(to right, var(--navy-transparent), transparent);
-            z-index: 1;
-        }
-
-        .pelaminan-curtain.right {
-            right: 0;
-            background: linear-gradient(to left, var(--navy-transparent), transparent);
-        }
-
-        .pelaminan-pillar {
-            position: absolute;
-            top: 0;
-            width: 80px;
-            height: 100%;
-            background: linear-gradient(to right, 
-                rgba(139, 0, 0, 0.3), 
-                rgba(212, 175, 55, 0.4), 
-                rgba(139, 0, 0, 0.3));
-            z-index: 1;
-        }
-
-        .pelaminan-pillar.left {
-            left: 10%;
-            transform: perspective(500px) rotateY(10deg);
-        }
-
-        .pelaminan-pillar.right {
-            right: 10%;
-            transform: perspective(500px) rotateY(-10deg);
-        }
-
-        .pelaminan-canopy {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(to bottom, 
-                rgba(139, 0, 0, 0.5), 
-                transparent);
-            clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
-            z-index: 1;
-        }
-
-        .gold-ornament {
-            position: absolute;
-            color: var(--gold);
-            font-size: 24px;
-            opacity: 0.6;
-            z-index: 2;
-        }
-
-        /* Header */
-        header {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            padding: 40px 20px;
         }
 
-        .header-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, 
-                transparent 0%, 
-                rgba(10, 31, 68, 0.6) 70%,
-                rgba(10, 31, 68, 0.9) 100%);
-            z-index: 1;
+        /* Navigation */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            padding: 1rem 0;
         }
 
-        .header-content {
-            position: relative;
-            z-index: 3;
-            max-width: 900px;
-            padding: 80px 60px;
-            background: rgba(10, 31, 68, 0.6);
-            backdrop-filter: blur(15px);
-            border-radius: 2px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                inset 0 0 100px rgba(212, 175, 55, 0.05);
-            animation: fadeIn 1.5s ease-out;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-content::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, 
-                transparent, 
-                rgba(212, 175, 55, 0.05), 
-                transparent);
-            animation: shine 8s linear infinite;
-        }
-
-        .invitation-label {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            letter-spacing: 12px;
-            color: var(--gold);
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            position: relative;
-            display: inline-block;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .invitation-label::before, .invitation-label::after {
-            content: '❖';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gold);
-            font-size: 1.5rem;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
-
-        .invitation-label::before {
-            left: -60px;
-        }
-
-        .invitation-label::after {
-            right: -60px;
-        }
-
-        .couple-names {
-            font-size: 4.8rem;
-            margin: 30px 0;
-            color: var(--white);
-            text-shadow: 
-                2px 2px 4px rgba(0, 0, 0, 0.5),
-                0 0 30px rgba(212, 175, 55, 0.3);
-            position: relative;
-            line-height: 1.2;
-        }
-
-        .couple-names::after {
-            content: '';
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 250px;
-            height: 3px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                var(--gold), 
-                var(--red), 
-                var(--gold), 
-                transparent);
-        }
-
-        .and-symbol {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            color: var(--gold);
-            margin: 25px 0;
-            font-weight: 300;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            animation: subtleGlow 3s infinite alternate;
-        }
-
-        .subtitle {
-            font-size: 1.6rem;
-            margin: 40px 0;
-            color: var(--gold-light);
-            font-weight: 300;
-            letter-spacing: 3px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .date-box {
-            display: inline-block;
-            padding: 25px 50px;
-            background: linear-gradient(135deg, 
-                rgba(212, 175, 55, 0.1), 
-                rgba(139, 0, 0, 0.1));
-            color: var(--gold);
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            margin: 40px 0;
-            font-size: 1.6rem;
-            font-weight: 500;
-            letter-spacing: 2px;
-            position: relative;
-            overflow: hidden;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .date-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(212, 175, 55, 0.2), 
-                rgba(139, 0, 0, 0.2),
-                transparent);
-            transition: left 1s ease;
-        }
-
-        .date-box:hover::before {
-            left: 100%;
-        }
-
-        /* Countdown */
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 35px;
-            margin: 60px 0;
-            flex-wrap: wrap;
-        }
-
-        .countdown-item {
-            background: linear-gradient(135deg, 
-                rgba(10, 31, 68, 0.7), 
-                rgba(26, 47, 92, 0.7));
-            padding: 30px 20px;
-            min-width: 140px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .countdown-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, 
-                transparent, 
-                rgba(212, 175, 55, 0.1), 
-                rgba(139, 0, 0, 0.1),
-                transparent);
-            transform: translateX(-100%);
-        }
-
-        .countdown-item:hover::before {
-            animation: shine 0.8s;
-        }
-
-        .countdown-item:hover {
-            transform: translateY(-15px);
-            border-color: var(--gold);
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.4),
-                0 0 30px rgba(212, 175, 55, 0.2);
-        }
-
-        .countdown-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem;
+        .navbar-brand {
             font-weight: 700;
-            display: block;
-            color: var(--gold);
-            margin-bottom: 15px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .countdown-label {
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            color: var(--gold-light);
-            font-weight: 400;
-        }
-
-        /* Sections */
-        section {
-            padding: 150px 0;
-            position: relative;
-        }
-
-        .section-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 31, 68, 0.85);
-            z-index: -1;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 4rem;
-            margin-bottom: 100px;
-            position: relative;
-            color: var(--white);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .section-title::before {
-            content: '';
-            position: absolute;
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 4px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                var(--gold), 
-                var(--red),
-                var(--gold),
-                transparent);
-        }
-
-        /* Couple Section */
-        .couple-section {
-            position: relative;
-        }
-
-        .couple-container {
-            display: flex;
-            justify-content: center;
-            gap: 100px;
-            flex-wrap: wrap;
-        }
-
-        .couple-card {
-            max-width: 500px;
-            padding: 60px;
-            background: linear-gradient(135deg, 
-                rgba(10, 31, 68, 0.8), 
-                rgba(26, 47, 92, 0.8));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            position: relative;
-            transition: all 0.6s ease;
-            opacity: 0;
-            transform: translateY(50px);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                inset 0 0 50px rgba(212, 175, 55, 0.05);
-        }
-
-        .couple-card.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .couple-card::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            bottom: 20px;
-            left: 20px;
-            border: 1px solid rgba(212, 175, 55, 0.1);
-            pointer-events: none;
-        }
-
-        .couple-card:hover {
-            border-color: var(--gold);
-            transform: translateY(-20px);
-            box-shadow: 
-                0 35px 70px rgba(0, 0, 0, 0.5),
-                0 0 40px rgba(212, 175, 55, 0.1);
-        }
-
-        .couple-icon {
-            font-size: 5rem;
-            color: var(--gold);
-            margin-bottom: 40px;
-            text-align: center;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-        }
-
-        .couple-name {
-            font-size: 3rem;
-            margin-bottom: 30px;
-            color: var(--white);
-            text-align: center;
-            font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .couple-parents {
-            font-size: 1.4rem;
-            color: var(--gold-light);
-            margin-bottom: 40px;
-            padding: 30px;
-            text-align: center;
-            background: linear-gradient(135deg, 
-                rgba(212, 175, 55, 0.05), 
-                rgba(139, 0, 0, 0.05));
-            border-left: 4px solid var(--gold);
-            line-height: 2;
-        }
-
-        .ayah-name, .ibu-name {
-            color: var(--gold);
-            font-weight: 500;
-        }
-
-        .couple-quote {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            color: var(--gold-light);
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 2px solid rgba(212, 175, 55, 0.2);
-            font-style: italic;
-            text-align: center;
-            line-height: 2;
-        }
-
-        /* Event Details */
-        .event-details {
-            position: relative;
-        }
-
-        .event-details .section-bg {
-            background: linear-gradient(135deg, 
-                rgba(10, 31, 68, 0.9), 
-                rgba(26, 47, 92, 0.9));
-        }
-
-        .event-container {
-            display: flex;
-            justify-content: center;
-            gap: 80px;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-        }
-
-        .event-card {
-            background: linear-gradient(135deg, 
-                rgba(10, 31, 68, 0.9), 
-                rgba(26, 47, 92, 0.9));
-            padding: 60px;
-            width: 450px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            transition: all 0.5s ease;
-            opacity: 0;
-            transform: translateY(50px);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                inset 0 0 50px rgba(212, 175, 55, 0.05);
-        }
-
-        .event-card.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .event-card:hover {
-            border-color: var(--gold);
-            transform: translateY(-15px);
-            box-shadow: 
-                0 30px 60px rgba(0, 0, 0, 0.5),
-                0 0 40px rgba(212, 175, 55, 0.1);
-        }
-
-        .event-icon {
-            font-size: 4.5rem;
-            color: var(--gold);
-            margin-bottom: 40px;
-            text-align: center;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-        }
-
-        .event-title {
-            font-size: 2.8rem;
-            margin-bottom: 35px;
-            color: var(--white);
-            text-align: center;
-            font-weight: 600;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .event-date, .event-time {
             font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--gold-light);
-            text-align: center;
-            font-weight: 400;
-            letter-spacing: 1px;
+            color: var(--primary);
         }
 
-        .event-location {
-            font-size: 1.3rem;
-            color: var(--white);
-            margin-top: 35px;
-            padding: 30px;
-            background: linear-gradient(135deg, 
-                rgba(212, 175, 55, 0.05), 
-                rgba(139, 0, 0, 0.05));
-            text-align: center;
-            line-height: 1.8;
+        .navbar-brand i {
+            color: var(--primary);
         }
 
-        /* Location */
-        .location-section {
-            position: relative;
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 0.625rem 1.5rem;
+            transition: all 0.3s;
         }
 
-        .location-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 80px;
-            align-items: center;
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
         }
 
-        .location-info {
-            flex: 1;
-            min-width: 350px;
-            padding: 60px;
-            background: linear-gradient(135deg, 
-                rgba(10, 31, 68, 0.8), 
-                rgba(26, 47, 92, 0.8));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            opacity: 0;
-            transform: translateX(-60px);
-            transition: all 0.8s ease;
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                inset 0 0 50px rgba(212, 175, 55, 0.05);
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
-        .location-info.active {
-            opacity: 1;
-            transform: translateX(0);
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
         }
 
-        .location-info h3 {
-            font-size: 2.8rem;
-            margin-bottom: 40px;
-            color: var(--white);
-            position: relative;
-            padding-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            border-color: var(--primary);
         }
 
-        .location-info h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 150px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--gold), var(--red));
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 5rem 0;
+            margin-top: 76px;
+            border-radius: 0 0 30px 30px;
         }
 
-        .location-info p {
-            margin: 25px 0;
-            color: var(--gold-light);
-            font-size: 1.3rem;
-            line-height: 2;
+        /* Cards */
+        .card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            height: 100%;
         }
 
-        .location-details {
-            margin-top: 40px;
-            padding: 35px;
-            background: linear-gradient(135deg, 
-                rgba(212, 175, 55, 0.05), 
-                rgba(139, 0, 0, 0.05));
-            border-left: 4px solid var(--gold);
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
-        .location-map {
-            flex: 1;
-            min-width: 350px;
-            height: 500px;
-            opacity: 0;
-            transform: translateX(60px);
-            transition: all 0.8s ease 0.2s;
-            border: 2px solid rgba(212, 175, 55, 0.4);
+        /* Seminar Cards */
+        .seminar-card {
+            height: 100%;
+        }
+
+        .seminar-image {
+            height: 180px;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .location-map.active {
-            opacity: 1;
-            transform: translateX(0);
+        .seminar-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
         }
 
-        .location-map::before {
-            content: '';
+        .seminar-card:hover .seminar-image img {
+            transform: scale(1.05);
+        }
+
+        .seminar-badge {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 31, 68, 0.2), 
-                rgba(26, 47, 92, 0.3));
-            z-index: 1;
-            pointer-events: none;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
 
-        .location-map iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            filter: sepia(0.3) contrast(1.1);
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 76px;
+            left: 0;
+            bottom: 0;
+            width: 260px;
+            background: white;
+            border-right: 1px solid var(--border);
+            padding: 2rem 1rem;
+            overflow-y: auto;
+            z-index: 1000;
         }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .menu-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .menu-item i {
+            width: 24px;
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            flex: 1;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-active { background: #d1fae5; color: #065f46; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+        .status-completed { background: #dbeafe; color: #1e40af; }
+        .status-paid { background: #d1fae5; color: #065f46; }
+        .status-unpaid { background: #fee2e2; color: #991b1b; }
 
         /* Footer */
-        footer {
-            background: linear-gradient(135deg, 
-                rgba(5, 15, 31, 0.95), 
-                rgba(10, 31, 68, 0.95));
-            padding: 120px 0 80px;
-            position: relative;
-            overflow: hidden;
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            margin-top: auto;
         }
 
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                var(--gold), 
-                var(--red),
-                var(--gold),
-                transparent);
-        }
-
-        .footer-content {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .footer-title {
-            font-size: 3.2rem;
-            margin-bottom: 60px;
-            color: var(--white);
-            position: relative;
-            display: inline-block;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .footer-title::after {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--gold), var(--red));
-        }
-
-        .rsvp-btn {
-            display: inline-block;
-            background: transparent;
-            color: var(--gold);
-            padding: 20px 50px;
-            border: 2px solid var(--gold);
+        .footer a {
+            color: #cbd5e1;
             text-decoration: none;
-            font-weight: 500;
-            margin: 50px 0;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-            position: relative;
-            overflow: hidden;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            transition: color 0.3s;
         }
 
-        .rsvp-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(212, 175, 55, 0.2), 
-                rgba(139, 0, 0, 0.2),
-                transparent);
-            transition: left 0.8s ease;
+        .footer a:hover {
+            color: white;
         }
 
-        .rsvp-btn:hover::before {
-            left: 100%;
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
         }
 
-        .rsvp-btn:hover {
-            background: linear-gradient(135deg, 
-                rgba(212, 175, 55, 0.1), 
-                rgba(139, 0, 0, 0.1));
-            transform: translateY(-8px);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                0 0 30px rgba(212, 175, 55, 0.2);
-        }
-
-        .footer-note {
-            margin-top: 80px;
-            color: var(--gold-light);
-            font-size: 1.3rem;
-            line-height: 2;
-        }
-
-        .signature {
-            margin-top: 50px;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            color: var(--gold);
-            font-style: italic;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes subtleGlow {
-            0% { text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
-            100% { text-shadow: 0 0 30px rgba(212, 175, 55, 0.6); }
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) rotate(45deg); }
-        }
-
-        /* Scroll Indicator */
-        .scroll-indicator {
-            position: fixed;
-            bottom: 60px;
-            right: 60px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, 
-                rgba(10, 31, 68, 0.9), 
-                rgba(26, 47, 92, 0.9));
-            border: 2px solid rgba(212, 175, 55, 0.4);
+        /* Pagination */
+        .pagination-container {
+            margin-top: 2rem;
             display: flex;
             justify-content: center;
-            align-items: center;
-            color: var(--gold);
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
-            opacity: 0;
-            visibility: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
-        .scroll-indicator.active {
-            opacity: 1;
-            visibility: visible;
+        .pagination .page-item.active .page-link {
+            background-color: var(--primary);
+            border-color: var(--primary);
         }
 
-        .scroll-indicator:hover {
-            background: linear-gradient(135deg, 
-                rgba(212, 175, 55, 0.1), 
-                rgba(139, 0, 0, 0.1));
-            border-color: var(--gold);
-            transform: scale(1.1);
-        }
-
-        /* Loading Screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--navy);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1s ease, visibility 1s ease;
-        }
-
-        .loading-content {
-            text-align: center;
-        }
-
-        .loading-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            color: var(--gold);
-            margin-top: 40px;
-            letter-spacing: 8px;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-        }
-
-        .loading-dots {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .loading-dots span {
-            width: 20px;
-            height: 20px;
-            background: var(--gold);
-            border-radius: 50%;
-            animation: loading 1.4s infinite ease-in-out both;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
-
-        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
-        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes loading {
-            0%, 80%, 100% { 
-                transform: scale(0.5); 
-                opacity: 0.3; 
-            }
-            40% { 
-                transform: scale(1); 
-                opacity: 1; 
-            }
+        /* Registration Form */
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
         }
 
         /* Responsive */
-        @media (max-width: 1200px) {
-            .couple-names {
-                font-size: 4rem;
-            }
-            
-            .section-title {
-                font-size: 3.5rem;
-            }
-            
-            .couple-card, .event-card {
-                width: 100%;
-                max-width: 550px;
-                padding: 50px;
-            }
-        }
-
         @media (max-width: 768px) {
-            .couple-names {
-                font-size: 3rem;
-            }
-            
-            .header-content {
-                padding: 50px 30px;
-            }
-            
-            .section-title {
-                font-size: 2.8rem;
-            }
-            
-            .countdown {
-                gap: 20px;
-            }
-            
-            .countdown-item {
-                min-width: 110px;
-                padding: 25px 15px;
-            }
-            
-            .countdown-number {
-                font-size: 3rem;
-            }
-            
-            .location-container {
-                flex-direction: column;
-            }
-            
-            .location-info, .location-map {
+            .sidebar {
+                position: static;
                 width: 100%;
-                min-width: 100%;
-                padding: 40px;
+                height: auto;
+                margin-bottom: 2rem;
             }
             
-            .scroll-indicator {
-                bottom: 30px;
-                right: 30px;
-                width: 50px;
-                height: 50px;
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .hero-section {
+                padding: 3rem 0;
+                border-radius: 0;
+            }
+            
+            .hero-section h1 {
+                font-size: 2rem;
             }
         }
-
-        /* Pelaminan Elements Position */
-        .gold-ornament:nth-child(1) { top: 20%; left: 15%; }
-        .gold-ornament:nth-child(2) { top: 30%; right: 20%; }
-        .gold-ornament:nth-child(3) { bottom: 25%; left: 25%; }
-        .gold-ornament:nth-child(4) { bottom: 40%; right: 15%; }
-        .gold-ornament:nth-child(5) { top: 45%; left: 30%; }
-        .gold-ornament:nth-child(6) { top: 60%; right: 25%; }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-content">
-            <div class="loading-text">M & A</div>
-            <div class="loading-dots">
-                <span></span>
-                <span></span>
-                <span></span>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chalkboard-teacher me-2"></i>SeminarPro
+            </a>
+            <div class="d-flex align-items-center">
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i>
+                        <span id="currentUser">Pengunjung</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="showProfile()"><i class="fas fa-user me-2"></i>Profil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div id="adminSidebar" class="sidebar d-none">
+        <div class="sidebar-header mb-4">
+            <h5 class="mb-0"><i class="fas fa-bars me-2"></i>Menu Admin</h5>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a class="menu-item active" onclick="showSection('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a class="menu-item" onclick="showSection('seminars')"><i class="fas fa-chalkboard-teacher"></i> Kelola Seminar</a></li>
+            <li><a class="menu-item" onclick="showSection('registrations')"><i class="fas fa-clipboard-list"></i> Pendaftaran</a></li>
+            <li><a class="menu-item" onclick="showSection('participants')"><i class="fas fa-users"></i> Peserta</a></li>
+            <li><a class="menu-item" onclick="showSection('speakers')"><i class="fas fa-microphone"></i> Pembicara</a></li>
+            <li><a class="menu-item" onclick="showSection('reports')"><i class="fas fa-chart-bar"></i> Laporan</a></li>
+        </ul>
     </div>
 
-    <!-- Pelaminan Background -->
-    <div class="pelaminan-bg"></div>
-    <div class="pelaminan-overlay"></div>
-    <div class="pelaminan-decoration">
-        <div class="pelaminan-canopy"></div>
-        <div class="pelaminan-curtain"></div>
-        <div class="pelaminan-curtain right"></div>
-        <div class="pelaminan-pillar left"></div>
-        <div class="pelaminan-pillar right"></div>
-        <div class="gold-ornament">❖</div>
-        <div class="gold-ornament">✦</div>
-        <div class="gold-ornament">✧</div>
-        <div class="gold-ornament">❈</div>
-        <div class="gold-ornament">✶</div>
-        <div class="gold-ornament">✷</div>
-    </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- User View -->
+        <div id="userView">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <h1 class="display-5 fw-bold mb-3">Tingkatkan Pengetahuan dengan Seminar Berkualitas</h1>
+                            <p class="lead mb-4">Daftar seminar online dan offline dengan pembicara terbaik di bidangnya. Platform terpercaya untuk pengembangan karir dan bisnis.</p>
+                            <div class="d-flex flex-wrap gap-3">
+                                <button class="btn btn-light btn-lg" onclick="scrollToSeminars()">
+                                    <i class="fas fa-calendar-alt me-2"></i>Lihat Seminar
+                                </button>
+                                <button class="btn btn-outline-light btn-lg" onclick="switchToAdmin()">
+                                    <i class="fas fa-user-shield me-2"></i>Admin Login
+                                </button>
+                                <button class="btn btn-light btn-lg" onclick="window.location.href='#footer'">
+                                    <i class="fas fa-question-circle me-2"></i>Bantuan
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card bg-white text-dark mt-4 mt-lg-0">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title mb-3"><i class="fas fa-chart-line me-2"></i>Statistik Platform</h5>
+                                    <div class="row text-center">
+                                        <div class="col-6 mb-3">
+                                            <div class="display-6 fw-bold" id="statSeminars">0</div>
+                                            <div class="text-muted">Seminar Aktif</div>
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <div class="display-6 fw-bold" id="statParticipants">0</div>
+                                            <div class="text-muted">Peserta</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="display-6 fw-bold" id="statSpeakers">0</div>
+                                            <div class="text-muted">Pembicara</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="display-6 fw-bold text-success" id="statSatisfaction">98%</div>
+                                            <div class="text-muted">Kepuasan</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-    <!-- Scroll to Top -->
-    <div class="scroll-indicator" id="scrollIndicator">
-        <i class="fas fa-chevron-up"></i>
-    </div>
+            <!-- Seminar List -->
+            <section class="py-5" id="seminarsSection">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="display-6 fw-bold mb-3">Daftar Seminar Tersedia</h2>
+                        <p class="lead text-muted">Pilih seminar yang sesuai dengan minat dan kebutuhan perkembangan karier Anda</p>
+                    </div>
 
-    <!-- Header -->
-    <header>
-        <div class="header-overlay"></div>
-        <div class="header-content">
-            <div class="invitation-label">Undangan Pernikahan</div>
-            <h1 class="couple-names">Muhammad Habiby</h1>
-            <div class="and-symbol">&</div>
-            <h1 class="couple-names">Amanda Putri Salsabila</h1>
-            
-            <div class="subtitle">Disneyland • 19 Februari 2026</div>
-            
-            <div class="date-box">
-                <i class="far fa-calendar-alt"></i> 19 Februari 2026
-            </div>
-            
-            <div class="countdown">
-                <div class="countdown-item">
-                    <span class="countdown-number" id="days">0</span>
-                    <span class="countdown-label">Hari</span>
+                    <!-- Filter Section -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <select class="form-select" id="filterCategory" onchange="filterSeminars()">
+                                <option value="">Semua Kategori</option>
+                                <option value="technology">Teknologi</option>
+                                <option value="business">Bisnis</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="finance">Keuangan</option>
+                                <option value="leadership">Leadership</option>
+                                <option value="health">Kesehatan</option>
+                                <option value="education">Pendidikan</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="filterLocation" onchange="filterSeminars()">
+                                <option value="">Semua Lokasi</option>
+                                <option value="Jakarta">Jakarta</option>
+                                <option value="Bandung">Bandung</option>
+                                <option value="Surabaya">Surabaya</option>
+                                <option value="Online">Online</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="date" class="form-control" id="filterDate" onchange="filterSeminars()">
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="searchSeminar" placeholder="Cari seminar..." onkeyup="filterSeminars()">
+                                <button class="btn btn-outline-primary" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seminar Grid -->
+                    <div class="row" id="seminarList">
+                        <!-- Seminar cards will be loaded here -->
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination-container">
+                        <nav>
+                            <ul class="pagination" id="pagination">
+                                <!-- Pagination will be generated here -->
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="hours">0</span>
-                    <span class="countdown-label">Jam</span>
+            </section>
+
+            <!-- How It Works -->
+            <section class="py-5 bg-light">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="display-6 fw-bold mb-3">Cara Mendaftar</h2>
+                        <p class="lead text-muted">Ikuti 4 langkah mudah untuk mengikuti seminar pilihan Anda</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="card border-0 text-center h-100">
+                                <div class="card-body">
+                                    <div class="display-4 text-primary mb-3">1</div>
+                                    <h5 class="card-title">Pilih Seminar</h5>
+                                    <p class="card-text text-muted">Pilih seminar yang sesuai dengan minat dan jadwal Anda</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="card border-0 text-center h-100">
+                                <div class="card-body">
+                                    <div class="display-4 text-primary mb-3">2</div>
+                                    <h5 class="card-title">Isi Formulir</h5>
+                                    <p class="card-text text-muted">Isi data diri lengkap untuk pendaftaran</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="card border-0 text-center h-100">
+                                <div class="card-body">
+                                    <div class="display-4 text-primary mb-3">3</div>
+                                    <h5 class="card-title">Bayar</h5>
+                                    <p class="card-text text-muted">Lakukan pembayaran sesuai instruksi</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <div class="card border-0 text-center h-100">
+                                <div class="card-body">
+                                    <div class="display-4 text-primary mb-3">4</div>
+                                    <h5 class="card-title">Konfirmasi</h5>
+                                    <p class="card-text text-muted">Dapatkan konfirmasi dan akses seminar</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="minutes">0</span>
-                    <span class="countdown-label">Menit</span>
-                </div>
-                <div class="countdown-item">
-                    <span class="countdown-number" id="seconds">0</span>
-                    <span class="countdown-label">Detik</span>
-                </div>
-            </div>
-            
-            <div style="margin-top: 50px; font-style: italic; color: var(--gold-light); font-size: 1.2rem; line-height: 1.8;">
-                "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu istri-istri dari jenismu sendiri, 
-                supaya kamu cenderung dan merasa tenteram kepadanya." (QS. Ar-Rum: 21)
-            </div>
+            </section>
         </div>
-    </header>
 
-    <!-- Couple Section -->
-    <section class="couple-section">
-        <div class="section-bg"></div>
-        <div class="container">
-            <h2 class="section-title">Kedua Mempelai</h2>
-            <div class="couple-container">
-                <!-- Mempelai Pria -->
-                <div class="couple-card" id="groomCard">
-                    <div class="couple-icon">
-                        <i class="fas fa-crown"></i>
+        <!-- Admin View -->
+        <div id="adminView" class="d-none">
+            <!-- Dashboard -->
+            <div id="dashboard" class="admin-section">
+                <h2 class="mb-4"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h2>
+                
+                <!-- Stats Cards -->
+                <div class="row">
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="text-primary mb-2">
+                                    <i class="fas fa-users fa-2x"></i>
+                                </div>
+                                <h3 class="card-title" id="adminStatParticipants">0</h3>
+                                <p class="card-text text-muted">Total Peserta</p>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="couple-name">Muhammad Habiby</h3>
-                    <div class="couple-parents">
-                        Putra dari<br>
-                        <span class="ayah-name">Darlis</span> & <span class="ibu-name">Halimatussa'diah</span>
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="text-success mb-2">
+                                    <i class="fas fa-money-bill-wave fa-2x"></i>
+                                </div>
+                                <h3 class="card-title" id="adminStatRevenue">Rp 0</h3>
+                                <p class="card-text text-muted">Total Revenue</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="couple-quote">
-                        "Barangsiapa bertakwa kepada Allah niscaya Dia akan mengadakan baginya jalan keluar."
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="text-warning mb-2">
+                                    <i class="fas fa-calendar-check fa-2x"></i>
+                                </div>
+                                <h3 class="card-title" id="adminStatSeminars">0</h3>
+                                <p class="card-text text-muted">Seminar Aktif</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-6 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div class="text-danger mb-2">
+                                    <i class="fas fa-clock fa-2x"></i>
+                                </div>
+                                <h3 class="card-title" id="adminStatPending">0</h3>
+                                <p class="card-text text-muted">Menunggu Konfirmasi</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Mempelai Wanita -->
-                <div class="couple-card" id="brideCard">
-                    <div class="couple-icon">
-                        <i class="fas fa-gem"></i>
+                <!-- Recent Registrations -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Pendaftaran Terbaru</h5>
+                        <button class="btn btn-sm btn-primary" onclick="showSection('registrations')">Lihat Semua</button>
                     </div>
-                    <h3 class="couple-name">Amanda Putri Salsabila</h3>
-                    <div class="couple-parents">
-                        Putri dari<br>
-                        <span class="ayah-name">Hadi Sarwana</span> & <span class="ibu-name">Fifi Novy Afianty</span>
-                    </div>
-                    <div class="couple-quote">
-                        "Maka sesungguhnya beserta kesulitan ada kemudahan. Sesungguhnya beserta kesulitan ada kemudahan."
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Kode</th>
+                                        <th>Nama</th>
+                                        <th>Seminar</th>
+                                        <th>Tanggal</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentRegistrations">
+                                    <!-- Will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Event Details -->
-    <section class="event-details">
-        <div class="section-bg"></div>
-        <div class="container">
-            <h2 class="section-title">Jadwal Acara</h2>
-            <div class="event-container">
-                <!-- Akad Nikah -->
-                <div class="event-card" id="akadCard">
-                    <div class="event-icon">
-                        <i class="fas fa-book-quran"></i>
-                    </div>
-                    <h3 class="event-title">Akad Nikah</h3>
-                    <div class="event-date">Senin, 19 Februari 2026</div>
-                    <div class="event-time">Pukul 08.00 - 10.00 WIB</div>
-                    <div class="event-location">
-                        <p><strong>Disneyland Castle Chapel</strong></p>
-                        <p>Disneyland Park, Anaheim, California</p>
-                        <p style="margin-top: 15px; color: var(--gold-light); font-size: 1.1rem;">
-                            <i class="fas fa-vest"></i> Dresscode: Formal Islami
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Resepsi -->
-                <div class="event-card" id="resepsiCard">
-                    <div class="event-icon">
-                        <i class="fas fa-glass-cheers"></i>
-                    </div>
-                    <h3 class="event-title">Resepsi Pernikahan</h3>
-                    <div class="event-date">Senin, 19 Februari 2026</div>
-                    <div class="event-time">Pukul 11.00 - 14.00 WIB</div>
-                    <div class="event-location">
-                        <p><strong>Disneyland Grand Ballroom</strong></p>
-                        <p>Disneyland Park, Anaheim, California</p>
-                        <p style="margin-top: 15px; color: var(--gold-light); font-size: 1.1rem;">
-                            <i class="fas fa-vest"></i> Dresscode: KUNTILANAK
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Location -->
-    <section class="location-section">
-        <div class="section-bg"></div>
-        <div class="container">
-            <h2 class="section-title">Lokasi Acara</h2>
-            <div class="location-container">
-                <div class="location-info" id="locationInfo">
-                    <h3><i class="fas fa-crown" style="margin-right: 15px; color: var(--gold);"></i> Disneyland Fairytale wedding</h3>
-                    <p>Dengan penuh rasa syukur dan bahagia, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara pernikahan kami di  Disneyland.</p>
-                    
-                    <div class="location-details">
-                        <p><strong><i class="fas fa-map-marker-alt"></i> Alamat Lengkap:</strong></p>
-                        <p>Disneyland Resort Pelaminan Emas</p>
-                        <p>1313 Disneyland Dr, Anaheim, CA 92802, Amerika Serikat</p>
-                        
-                        <p style="margin-top: 25px;"><strong><i class="fas fa-star"></i> Fasilitas Pelaminan:</strong></p>
-                        <p>• Pelaminan berlapis emas 24 karat</p>
-                        <p>• Dekorasi kristal Swarovski</p>
-                        <p>• Karpet merah premium</p>
-                        <p>• Sistem audio premium</p>
-                    </div>
-                    
-                    <button class="rsvp-btn" id="directionsBtn" style="margin-top: 40px;">
-                        <i class="fas fa-directions"></i> Petunjuk Menuju Pelaminan
+            <!-- Manage Seminars -->
+            <div id="seminars" class="admin-section d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fas fa-chalkboard-teacher me-2"></i>Kelola Seminar</h2>
+                    <button class="btn btn-primary" onclick="showAddSeminarModal()">
+                        <i class="fas fa-plus me-2"></i>Tambah Seminar
                     </button>
                 </div>
-                
-                <div class="location-map" id="locationMap">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3316.237848246234!2d-117.92077832387609!3d33.81209187326911!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80dcd7d12b3b5e6b%3A0x2ef62f8418225cfa!2sDisneyland%20Park!5e0!3m2!1sen!2sid!4v1686146781744!5m2!1sen!2sid" 
-                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Kode</th>
+                                        <th>Judul</th>
+                                        <th>Tanggal</th>
+                                        <th>Lokasi</th>
+                                        <th>Kuota</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="seminarsTable">
+                                    <!-- Will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manage Registrations -->
+            <div id="registrations" class="admin-section d-none">
+                <h2 class="mb-4"><i class="fas fa-clipboard-list me-2"></i>Kelola Pendaftaran</h2>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Kode</th>
+                                        <th>Nama</th>
+                                        <th>Seminar</th>
+                                        <th>Tanggal</th>
+                                        <th>Status</th>
+                                        <th>Pembayaran</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="registrationsTable">
+                                    <!-- Will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manage Participants -->
+            <div id="participants" class="admin-section d-none">
+                <h2 class="mb-4"><i class="fas fa-users me-2"></i>Kelola Peserta</h2>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>Telepon</th>
+                                        <th>Seminar Diikuti</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="participantsTable">
+                                    <!-- Will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manage Speakers -->
+            <div id="speakers" class="admin-section d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="fas fa-microphone me-2"></i>Kelola Pembicara</h2>
+                    <button class="btn btn-primary" onclick="showAddSpeakerModal()">
+                        <i class="fas fa-plus me-2"></i>Tambah Pembicara
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nama</th>
+                                        <th>Spesialisasi</th>
+                                        <th>Email</th>
+                                        <th>Jumlah Seminar</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="speakersTable">
+                                    <!-- Will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports -->
+            <div id="reports" class="admin-section d-none">
+                <h2 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Laporan</h2>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Filter Laporan</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Dari Tanggal</label>
+                                        <input type="date" class="form-control" id="reportFromDate">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Sampai Tanggal</label>
+                                        <input type="date" class="form-control" id="reportToDate">
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary w-100" onclick="generateReport()">
+                                            <i class="fas fa-download me-2"></i>Generate Report
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Ringkasan</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h6>Total Pendaftaran</h6>
+                                        <h3 id="reportTotalReg">0</h3>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6>Total Revenue</h6>
+                                        <h3 id="reportTotalRev">Rp 0</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <canvas id="reportChart" height="100"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer" id="footer">
         <div class="container">
-            <div class="footer-content">
-                <h3 class="footer-title">Konfirmasi Kehadiran</h3>
-                <p style="font-size: 1.4rem; margin-bottom: 40px; color: var(--gold-light); line-height: 1.8;">
-                    Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i 
-                    berkenan hadir di pelaminan kami untuk memberikan doa restu.
-                </p>
-                <p style="font-size: 1.3rem; margin-bottom: 50px; color: var(--gold-light);">
-                    Konfirmasi kehadiran paling lambat <strong style="color: var(--gold);">10 Februari 2026</strong>
-                </p>
-                
-                <button class="rsvp-btn" id="rsvpButton">
-                    <i class="fas fa-paper-plane"></i> Konfirmasi Kehadiran
-                </button>
-                
-                <div class="footer-note">
-                    <p style="margin-top: 60px; font-size: 1.5rem; line-height: 2;">
-                        "Ya Tuhan kami, anugerahkanlah kepada kami istri-istri kami dan keturunan kami 
-                        sebagai penyenang hati (kami), dan jadikanlah kami pemimpin bagi orang-orang yang bertakwa."
-                    </p>
-                    <div class="signature">
-                        Muhammad Habiby & Amanda Putri Salsabila
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h4 class="mb-3">SeminarPro</h4>
+                    <p class="mb-3">Platform professional untuk manajemen dan pendaftaran seminar dengan sistem terintegrasi terbaik di Indonesia.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#"><i class="fab fa-linkedin fa-lg"></i></a>
+                        <a href="#"><i class="fab fa-youtube fa-lg"></i></a>
                     </div>
-                    <p style="margin-top: 30px; font-size: 1.4rem;">
-                        Beserta Keluarga
-                    </p>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4">
+                    <h5 class="mb-3">Menu</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#seminarsSection">Seminar</a></li>
+                        <li class="mb-2"><a href="#" onclick="switchToAdmin()">Admin Login</a></li>
+                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">Tentang Kami</a></li>
+                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Kontak</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 class="mb-3">Layanan</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#">Buat Seminar</a></li>
+                        <li class="mb-2"><a href="#">Sponsorship</a></li>
+                        <li class="mb-2"><a href="#">Partner Program</a></li>
+                        <li class="mb-2"><a href="#">API Integration</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4 mb-4">
+                    <h5 class="mb-3">Kontak</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Jakarta, Indonesia</li>
+                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +62 812-3456-7890</li>
+                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@seminarpro.com</li>
+                        <li><i class="fas fa-clock me-2"></i> Senin - Jumat: 9:00 - 17:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="mb-0">&copy; 2024 SeminarPro. Hak Cipta Dilindungi.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a href="#" class="me-3" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
+                    </div>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Loading Screen
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                document.getElementById('loadingScreen').style.opacity = '0';
-                document.getElementById('loadingScreen').style.visibility = 'hidden';
-            }, 1800);
-        });
+    <!-- Modals -->
 
-        // Countdown Timer
-        function updateCountdown() {
-            const weddingDate = new Date('February 19, 2026 08:00:00').getTime();
-            const now = new Date().getTime();
-            const timeLeft = weddingDate - now;
-            
-            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-            
-            document.getElementById('days').innerHTML = days;
-            document.getElementById('hours').innerHTML = hours;
-            document.getElementById('minutes').innerHTML = minutes;
-            document.getElementById('seconds').innerHTML = seconds;
-            
-            // Add subtle animation to changing numbers
-            const numbers = document.querySelectorAll('.countdown-number');
-            numbers.forEach(num => {
-                num.style.transform = 'scale(1.1)';
-                num.style.color = 'var(--gold-light)';
-                setTimeout(() => {
-                    num.style.transform = 'scale(1)';
-                    num.style.color = 'var(--gold)';
-                }, 300);
-            });
-        }
-        
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        // Scroll to Top Button
-        const scrollIndicator = document.getElementById('scrollIndicator');
-        
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 500) {
-                scrollIndicator.classList.add('active');
-            } else {
-                scrollIndicator.classList.remove('active');
-            }
-            
-            // Parallax effect for pelaminan elements
-            const scrolled = window.pageYOffset;
-            const pelaminanBg = document.querySelector('.pelaminan-bg');
-            const pelaminanCanopy = document.querySelector('.pelaminan-canopy');
-            
-            if (pelaminanBg) {
-                pelaminanBg.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
-            if (pelaminanCanopy) {
-                pelaminanCanopy.style.transform = `translateY(${scrolled * 0.3}px)`;
-            }
-        });
-        
-        scrollIndicator.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        // Scroll Animation for Elements
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -100px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    
-                    // Add a subtle glow effect
-                    if (entry.target.classList.contains('couple-card') || 
-                        entry.target.classList.contains('event-card')) {
-                        entry.target.style.boxShadow = 
-                            '0 35px 70px rgba(0, 0, 0, 0.5), 0 0 50px rgba(212, 175, 55, 0.15)';
-                        setTimeout(() => {
-                            entry.target.style.boxShadow = '';
-                        }, 1000);
-                    }
-                }
-            });
-        }, observerOptions);
-        
-        // Observe elements
-        const elementsToAnimate = [
-            document.getElementById('groomCard'),
-            document.getElementById('brideCard'),
-            document.getElementById('akadCard'),
-            document.getElementById('resepsiCard'),
-            document.getElementById('locationInfo'),
-            document.getElementById('locationMap')
-        ];
-        
-        elementsToAnimate.forEach(el => {
-            if (el) observer.observe(el);
-        });
-
-        // RSVP Modal dengan tema pelaminan
-        document.getElementById('rsvpButton').addEventListener('click', function() {
-            const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(5, 15, 31, 0.95);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 10000;
-                backdrop-filter: blur(10px);
-            `;
-            
-            modal.innerHTML = `
-                <div style="background: linear-gradient(135deg, rgba(10, 31, 68, 0.95), rgba(26, 47, 92, 0.95)); 
-                         padding: 60px; max-width: 550px; width: 90%; 
-                         border: 2px solid rgba(212, 175, 55, 0.4); 
-                         position: relative; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);">
-                    <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); 
-                              background: var(--navy); padding: 0 30px; color: var(--gold); 
-                              font-family: 'Playfair Display', serif; font-size: 1.8rem;">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <button id="closeModal" style="position: absolute; top: 25px; right: 25px; 
-                             background: none; border: none; color: var(--gold); font-size: 2rem; 
-                             cursor: pointer; padding: 5px;">×</button>
-                    <h3 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; 
-                             color: var(--white); margin-bottom: 40px; text-align: center;
-                             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
-                        Konfirmasi Kehadiran
-                    </h3>
-                    <form id="rsvpForm" style="display: flex; flex-direction: column; gap: 25px;">
-                        <div>
-                            <label style="display: block; margin-bottom: 12px; color: var(--gold-light); 
-                                     font-size: 1.1rem; letter-spacing: 1px;">
-                                Nama Lengkap
-                            </label>
-                            <input type="text" required style="width: 100%; padding: 15px; 
-                                  background: rgba(255, 255, 255, 0.1); 
-                                  border: 1px solid rgba(212, 175, 55, 0.4); 
-                                  color: var(--white); font-size: 1.1rem;
-                                  transition: all 0.3s ease;">
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login Admin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm" onsubmit="return handleLogin(event)">
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
                         </div>
-                        <div>
-                            <label style="display: block; margin-bottom: 12px; color: var(--gold-light); 
-                                     font-size: 1.1rem; letter-spacing: 1px;">
-                                Jumlah Tamu
-                            </label>
-                            <select style="width: 100%; padding: 15px; 
-                                   background: rgba(255, 255, 255, 0.1); 
-                                   border: 1px solid rgba(212, 175, 55, 0.4); 
-                                   color: var(--white); font-size: 1.1rem;">
-                                <option value="1">1 Orang</option>
-                                <option value="2">2 Orang</option>
-                                <option value="3">3 Orang</option>
-                                <option value="4">4 Orang</option>
-                                <option value="5+">5 Orang atau lebih</option>
-                            </select>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
                         </div>
-                        <div>
-                            <label style="display: block; margin-bottom: 12px; color: var(--gold-light); 
-                                     font-size: 1.1rem; letter-spacing: 1px;">
-                                Ucapan untuk Mempelai
-                            </label>
-                            <textarea rows="4" style="width: 100%; padding: 15px; 
-                                    background: rgba(255, 255, 255, 0.1); 
-                                    border: 1px solid rgba(212, 175, 55, 0.4); 
-                                    color: var(--white); font-size: 1.1rem; 
-                                    resize: vertical; min-height: 120px;"></textarea>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Ingat saya</label>
                         </div>
-                        <button type="submit" style="background: transparent; color: var(--gold); 
-                                border: 2px solid var(--gold); padding: 18px; font-size: 1.2rem; 
-                                cursor: pointer; margin-top: 20px; letter-spacing: 2px;
-                                transition: all 0.3s ease; position: relative; overflow: hidden;">
-                            <i class="fas fa-paper-plane" style="margin-right: 10px;"></i>
-                            Kirim Konfirmasi
-                        </button>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                        </div>
                     </form>
                 </div>
-            `;
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Seminar Modal -->
+    <div class="modal fade" id="addSeminarModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Seminar Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="seminarForm" onsubmit="return saveSeminar(event)">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Judul Seminar *</label>
+                                <input type="text" class="form-control" id="seminarTitle" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Kategori *</label>
+                                <select class="form-select" id="seminarCategory" required>
+                                    <option value="">Pilih Kategori</option>
+                                    <option value="technology">Teknologi</option>
+                                    <option value="business">Bisnis</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="finance">Keuangan</option>
+                                    <option value="leadership">Leadership</option>
+                                    <option value="health">Kesehatan</option>
+                                    <option value="education">Pendidikan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tanggal *</label>
+                                <input type="date" class="form-control" id="seminarDate" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Waktu *</label>
+                                <input type="time" class="form-control" id="seminarTime" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Lokasi *</label>
+                                <select class="form-select" id="seminarLocation" required>
+                                    <option value="">Pilih Lokasi</option>
+                                    <option value="Jakarta">Jakarta</option>
+                                    <option value="Bandung">Bandung</option>
+                                    <option value="Surabaya">Surabaya</option>
+                                    <option value="Bali">Bali</option>
+                                    <option value="Online">Online</option>
+                                    <option value="Hybrid">Hybrid</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Kuota Peserta *</label>
+                                <input type="number" class="form-control" id="seminarQuota" min="1" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Harga (Rp) *</label>
+                                <input type="number" class="form-control" id="seminarPrice" min="0" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Harga Early Bird (Rp)</label>
+                                <input type="number" class="form-control" id="seminarEarlyBird" min="0">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Deskripsi *</label>
+                                <textarea class="form-control" id="seminarDescription" rows="3" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Pembicara</label>
+                                <select class="form-select" id="seminarSpeakers" multiple>
+                                    <!-- Speakers will be populated -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">Simpan Seminar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div class="modal fade" id="registrationModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Pendaftaran Seminar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="registrationForm">
+                        <div class="alert alert-primary">
+                            <h5 id="selectedSeminarTitle" class="mb-1"></h5>
+                            <p class="mb-0 text-muted" id="selectedSeminarInfo"></p>
+                        </div>
+                        
+                        <div class="row g-3 mt-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Lengkap *</label>
+                                <input type="text" class="form-control" id="regName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="regEmail" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Telepon *</label>
+                                <input type="tel" class="form-control" id="regPhone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Instansi/Perusahaan *</label>
+                                <input type="text" class="form-control" id="regInstitution" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Jabatan</label>
+                                <input type="text" class="form-control" id="regPosition">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Jumlah Tiket *</label>
+                                <select class="form-select" id="regTicketCount" required onchange="updatePaymentSummary()">
+                                    <option value="1">1 Tiket</option>
+                                    <option value="2">2 Tiket</option>
+                                    <option value="3">3 Tiket</option>
+                                    <option value="4">4 Tiket</option>
+                                    <option value="5">5 Tiket</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="card border-primary">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">Ringkasan Pembayaran</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Harga Tiket</span>
+                                            <span id="ticketPrice">Rp 0</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Jumlah Tiket</span>
+                                            <span id="ticketCount">1</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Diskon Early Bird</span>
+                                            <span id="earlyBirdDiscount">- Rp 0</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Pajak (10%)</span>
+                                            <span id="taxAmount">Rp 0</span>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-between fw-bold fs-5">
+                                            <span>Total Pembayaran</span>
+                                            <span class="text-primary" id="totalPayment">Rp 0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                    <label class="form-check-label" for="termsCheck">
+                                        Saya menyetujui <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">syarat dan ketentuan</a> yang berlaku
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="submitRegistration()" id="submitRegistrationBtn">
+                        <i class="fas fa-paper-plane me-2"></i>Daftar Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modals -->
+    <div class="modal fade" id="aboutModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tentang SeminarPro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>SeminarPro adalah platform terdepan untuk manajemen dan pendaftaran seminar di Indonesia. Kami menghubungkan penyelenggara seminar dengan peserta melalui sistem yang efisien dan profesional.</p>
+                    <p>Didirikan pada tahun 2020, kami telah membantu ribuan seminar dengan total peserta lebih dari 50,000 orang.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="contactModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Kontak Kami</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Alamat:</strong><br>Gedung SeminarPro, Jl. Sudirman No. 123, Jakarta 10220</p>
+                    <p><strong>Telepon:</strong><br>+62 812-3456-7890</p>
+                    <p><strong>Email:</strong><br>info@seminarpro.com</p>
+                    <p><strong>Jam Operasional:</strong><br>Senin - Jumat: 9:00 - 17:00 WIB</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        let currentUser = null;
+        let isAdmin = false;
+        let selectedSeminarId = null;
+        let currentPage = 1;
+        const seminarsPerPage = 6;
+        let currentSeminars = [];
+
+        // In-memory database
+        let seminars = JSON.parse(localStorage.getItem('seminars')) || [];
+        let registrations = JSON.parse(localStorage.getItem('registrations')) || [];
+        let participants = JSON.parse(localStorage.getItem('participants')) || [];
+        let speakers = JSON.parse(localStorage.getItem('speakers')) || [];
+
+        // Initialize with 20+ seminars
+        function initializeData() {
+            if (seminars.length === 0) {
+                const seminarImages = [
+                    'https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                    'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                    'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                    'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                    'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                    'https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'
+                ];
+
+                seminars = [
+                    {
+                        id: 1, code: 'SEM001', title: 'AI Conference 2024', category: 'technology',
+                        date: '2024-02-15', time: '09:00', location: 'Jakarta', quota: 100, registered: 75,
+                        price: 500000, earlyBirdPrice: 400000, description: 'Exploring the Future of AI',
+                        speakers: ['Dr. Andi Wijaya, Ph.D'], status: 'active', image: seminarImages[0]
+                    },
+                    {
+                        id: 2, code: 'SEM002', title: 'Digital Marketing Masterclass', category: 'marketing',
+                        date: '2024-02-20', time: '09:00', location: 'Online', quota: 150, registered: 120,
+                        price: 750000, earlyBirdPrice: 600000, description: 'Advanced Digital Marketing Strategies',
+                        speakers: ['Sari Dewi, MBA'], status: 'active', image: seminarImages[1]
+                    },
+                    {
+                        id: 3, code: 'SEM003', title: 'Data Science Bootcamp', category: 'technology',
+                        date: '2024-02-25', time: '10:00', location: 'Bandung', quota: 50, registered: 35,
+                        price: 1200000, earlyBirdPrice: 950000, description: 'Intensive Data Science Training',
+                        speakers: ['Prof. Budi Santoso'], status: 'active', image: seminarImages[2]
+                    },
+                    {
+                        id: 4, code: 'SEM004', title: 'Financial Planning Workshop', category: 'finance',
+                        date: '2024-03-01', time: '13:00', location: 'Jakarta', quota: 80, registered: 60,
+                        price: 350000, earlyBirdPrice: 280000, description: 'Smart Financial Planning',
+                        speakers: ['Bambang Hartono, CFA'], status: 'active', image: seminarImages[3]
+                    },
+                    {
+                        id: 5, code: 'SEM005', title: 'Leadership Summit 2024', category: 'leadership',
+                        date: '2024-03-05', time: '08:30', location: 'Surabaya', quota: 200, registered: 180,
+                        price: 850000, earlyBirdPrice: 680000, description: 'Leadership Excellence',
+                        speakers: ['Dian Pertiwi, Ph.D'], status: 'active', image: seminarImages[4]
+                    },
+                    {
+                        id: 6, code: 'SEM006', title: 'Health & Wellness Expo', category: 'health',
+                        date: '2024-03-10', time: '10:00', location: 'Hybrid', quota: 120, registered: 90,
+                        price: 300000, earlyBirdPrice: 240000, description: 'Holistic Health Approach',
+                        speakers: ['Dr. Siti Rahayu'], status: 'active', image: seminarImages[5]
+                    },
+                    {
+                        id: 7, code: 'SEM007', title: 'Blockchain Revolution', category: 'technology',
+                        date: '2024-03-15', time: '14:00', location: 'Online', quota: 100, registered: 65,
+                        price: 600000, earlyBirdPrice: 480000, description: 'Understanding Blockchain',
+                        speakers: ['Rudi Hermawan'], status: 'active', image: seminarImages[0]
+                    },
+                    {
+                        id: 8, code: 'SEM008', title: 'Startup Funding Workshop', category: 'business',
+                        date: '2024-03-20', time: '09:00', location: 'Jakarta', quota: 60, registered: 40,
+                        price: 450000, earlyBirdPrice: 360000, description: 'Get Your Startup Funded',
+                        speakers: ['Michael Chen'], status: 'active', image: seminarImages[1]
+                    },
+                    {
+                        id: 9, code: 'SEM009', title: 'Content Marketing Strategy', category: 'marketing',
+                        date: '2024-03-25', time: '13:00', location: 'Online', quota: 150, registered: 110,
+                        price: 400000, earlyBirdPrice: 320000, description: 'Content That Converts',
+                        speakers: ['Lisa Wong'], status: 'active', image: seminarImages[2]
+                    },
+                    {
+                        id: 10, code: 'SEM010', title: 'Cybersecurity Essentials', category: 'technology',
+                        date: '2024-04-01', time: '10:00', location: 'Jakarta', quota: 80, registered: 55,
+                        price: 550000, earlyBirdPrice: 440000, description: 'Protect Your Digital Assets',
+                        speakers: ['Ahmad Fauzi'], status: 'active', image: seminarImages[3]
+                    },
+                    {
+                        id: 11, code: 'SEM011', title: 'E-commerce Mastery', category: 'business',
+                        date: '2024-04-05', time: '09:00', location: 'Bandung', quota: 100, registered: 70,
+                        price: 350000, earlyBirdPrice: 280000, description: 'Build Successful E-commerce',
+                        speakers: ['Dewi Anggraini'], status: 'active', image: seminarImages[4]
+                    },
+                    {
+                        id: 12, code: 'SEM012', title: 'Public Speaking Workshop', category: 'leadership',
+                        date: '2024-04-10', time: '13:00', location: 'Surabaya', quota: 60, registered: 45,
+                        price: 250000, earlyBirdPrice: 200000, description: 'Speak With Confidence',
+                        speakers: ['Robert Johnson'], status: 'active', image: seminarImages[5]
+                    },
+                    {
+                        id: 13, code: 'SEM013', title: 'Machine Learning Bootcamp', category: 'technology',
+                        date: '2024-04-15', time: '09:00', location: 'Online', quota: 120, registered: 95,
+                        price: 800000, earlyBirdPrice: 640000, description: 'Practical ML Applications',
+                        speakers: ['Dr. Sarah Lee'], status: 'active', image: seminarImages[0]
+                    },
+                    {
+                        id: 14, code: 'SEM014', title: 'Social Media Marketing', category: 'marketing',
+                        date: '2024-04-20', time: '14:00', location: 'Jakarta', quota: 90, registered: 65,
+                        price: 300000, earlyBirdPrice: 240000, description: 'Master Social Media',
+                        speakers: ['Andi Santoso'], status: 'active', image: seminarImages[1]
+                    },
+                    {
+                        id: 15, code: 'SEM015', title: 'Investment Strategy 2024', category: 'finance',
+                        date: '2024-04-25', time: '10:00', location: 'Online', quota: 150, registered: 120,
+                        price: 400000, earlyBirdPrice: 320000, description: 'Smart Investment Decisions',
+                        speakers: ['David Wilson'], status: 'active', image: seminarImages[2]
+                    }
+                ];
+                saveToStorage('seminars', seminars);
+            }
+
+            if (speakers.length === 0) {
+                speakers = [
+                    { id: 1, name: 'Dr. Andi Wijaya, Ph.D', specialty: 'Artificial Intelligence', email: 'andi@email.com' },
+                    { id: 2, name: 'Sari Dewi, MBA', specialty: 'Digital Marketing', email: 'sari@email.com' },
+                    { id: 3, name: 'Prof. Budi Santoso', specialty: 'Data Science', email: 'budi@email.com' },
+                    { id: 4, name: 'Bambang Hartono, CFA', specialty: 'Finance', email: 'bambang@email.com' },
+                    { id: 5, name: 'Dian Pertiwi, Ph.D', specialty: 'Leadership', email: 'dian@email.com' },
+                    { id: 6, name: 'Dr. Siti Rahayu', specialty: 'Health & Wellness', email: 'siti@email.com' },
+                    { id: 7, name: 'Rudi Hermawan', specialty: 'Blockchain', email: 'rudi@email.com' },
+                    { id: 8, name: 'Michael Chen', specialty: 'Startup', email: 'michael@email.com' },
+                    { id: 9, name: 'Lisa Wong', specialty: 'Content Marketing', email: 'lisa@email.com' },
+                    { id: 10, name: 'Ahmad Fauzi', specialty: 'Cybersecurity', email: 'ahmad@email.com' }
+                ];
+                saveToStorage('speakers', speakers);
+            }
+
+            if (registrations.length === 0) {
+                registrations = [
+                    {
+                        id: 1, code: 'REG001', seminarId: 1, seminarTitle: 'AI Conference 2024',
+                        participantName: 'Budi Santoso', participantEmail: 'budi@email.com',
+                        participantPhone: '081234567890', institution: 'PT. Maju Jaya',
+                        position: 'Manager', ticketCount: 1, amount: 442500,
+                        status: 'confirmed', paymentStatus: 'paid', registrationDate: '2024-01-10'
+                    },
+                    {
+                        id: 2, code: 'REG002', seminarId: 2, seminarTitle: 'Digital Marketing Masterclass',
+                        participantName: 'Sari Dewi', participantEmail: 'sari@email.com',
+                        participantPhone: '082345678901', institution: 'Digital Agency',
+                        position: 'Director', ticketCount: 2, amount: 1255000,
+                        status: 'pending', paymentStatus: 'unpaid', registrationDate: '2024-01-11'
+                    }
+                ];
+                saveToStorage('registrations', registrations);
+            }
+
+            if (participants.length === 0) {
+                participants = [
+                    {
+                        id: 1, name: 'Budi Santoso', email: 'budi@email.com',
+                        phone: '081234567890', institution: 'PT. Maju Jaya',
+                        position: 'Manager', seminarCount: 1
+                    },
+                    {
+                        id: 2, name: 'Sari Dewi', email: 'sari@email.com',
+                        phone: '082345678901', institution: 'Digital Agency',
+                        position: 'Director', seminarCount: 1
+                    }
+                ];
+                saveToStorage('participants', participants);
+            }
+        }
+
+        // ==================== CORE FUNCTIONS ====================
+        function saveToStorage(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        function updateStats() {
+            const activeSeminars = seminars.filter(s => s.status === 'active').length;
+            const totalParticipants = registrations.reduce((sum, reg) => sum + reg.ticketCount, 0);
+            const totalRevenue = registrations
+                .filter(reg => reg.paymentStatus === 'paid')
+                .reduce((sum, reg) => sum + reg.amount, 0);
+            const pendingRegistrations = registrations.filter(reg => reg.status === 'pending').length;
+            const totalSpeakers = speakers.length;
+
+            document.getElementById('statSeminars').textContent = activeSeminars;
+            document.getElementById('statParticipants').textContent = totalParticipants;
+            document.getElementById('statSpeakers').textContent = totalSpeakers;
+            document.getElementById('statSatisfaction').textContent = '98%';
+
+            document.getElementById('adminStatParticipants').textContent = totalParticipants;
+            document.getElementById('adminStatRevenue').textContent = `Rp ${totalRevenue.toLocaleString()}`;
+            document.getElementById('adminStatSeminars').textContent = activeSeminars;
+            document.getElementById('adminStatPending').textContent = pendingRegistrations;
+        }
+
+        // ==================== SEMINAR DISPLAY ====================
+        function loadSeminars(page = 1) {
+            currentPage = page;
+            currentSeminars = seminars.filter(s => s.status === 'active');
+            applyFilters();
             
-            document.body.appendChild(modal);
+            const container = document.getElementById('seminarList');
+            container.innerHTML = '';
+
+            const startIndex = (page - 1) * seminarsPerPage;
+            const endIndex = startIndex + seminarsPerPage;
+            const seminarsToShow = currentSeminars.slice(startIndex, endIndex);
+
+            if (seminarsToShow.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Tidak ada seminar yang sesuai dengan filter</h4>
+                    </div>
+                `;
+                generatePagination();
+                return;
+            }
+
+            seminarsToShow.forEach(seminar => {
+                const percentage = Math.round((seminar.registered / seminar.quota) * 100);
+                const isEarlyBird = new Date() < new Date(seminar.date);
+                const currentPrice = isEarlyBird && seminar.earlyBirdPrice ? seminar.earlyBirdPrice : seminar.price;
+                const discount = isEarlyBird && seminar.earlyBirdPrice ? seminar.price - seminar.earlyBirdPrice : 0;
+
+                const card = `
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card seminar-card">
+                            <div class="seminar-image">
+                                <img src="${seminar.image}" alt="${seminar.title}">
+                                <span class="seminar-badge">${getCategoryName(seminar.category)}</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-primary">${seminar.code}</span>
+                                    <small class="text-muted">${formatDate(seminar.date)}</small>
+                                </div>
+                                <h5 class="card-title">${seminar.title}</h5>
+                                <p class="card-text text-muted mb-3">${seminar.description.substring(0, 100)}...</p>
+                                
+                                <div class="mb-3">
+                                    <div><i class="fas fa-clock me-2 text-primary"></i>${seminar.time} WIB</div>
+                                    <div><i class="fas fa-map-marker-alt me-2 text-primary"></i>${seminar.location}</div>
+                                    <div><i class="fas fa-chalkboard-teacher me-2 text-primary"></i>${seminar.speakers.join(', ')}</div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="h4 text-primary">Rp ${currentPrice.toLocaleString()}</span>
+                                        ${discount > 0 ? `
+                                            <span class="text-success">
+                                                <i class="fas fa-bolt me-1"></i>
+                                                Hemat Rp ${discount.toLocaleString()}
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>Kuota: ${seminar.registered}/${seminar.quota}</span>
+                                        <span>${percentage}% terisi</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar ${percentage >= 90 ? 'bg-danger' : percentage >= 70 ? 'bg-warning' : 'bg-success'}" 
+                                             style="width: ${percentage}%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-primary" onclick="startRegistration(${seminar.id})" 
+                                            ${seminar.registered >= seminar.quota ? 'disabled' : ''}>
+                                        <i class="fas fa-calendar-plus me-2"></i>
+                                        ${seminar.registered >= seminar.quota ? 'KUOTA PENUH' : 'DAFTAR SEKARANG'}
+                                    </button>
+                                    <button class="btn btn-outline-primary" onclick="showSeminarDetail(${seminar.id})">
+                                        <i class="fas fa-info-circle me-2"></i>Detail Seminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+
+            generatePagination();
+        }
+
+        function generatePagination() {
+            const totalPages = Math.ceil(currentSeminars.length / seminarsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Previous button
+            pagination.innerHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="loadSeminars(${currentPage - 1})">«</a>
+                </li>
+            `;
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    pagination.innerHTML += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="loadSeminars(${i})">${i}</a>
+                        </li>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+
+            // Next button
+            pagination.innerHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="loadSeminars(${currentPage + 1})">»</a>
+                </li>
+            `;
+        }
+
+        function filterSeminars() {
+            const category = document.getElementById('filterCategory').value;
+            const location = document.getElementById('filterLocation').value;
+            const date = document.getElementById('filterDate').value;
+            const search = document.getElementById('searchSeminar').value.toLowerCase();
+
+            currentSeminars = seminars.filter(seminar => {
+                if (seminar.status !== 'active') return false;
+                if (category && seminar.category !== category) return false;
+                if (location && seminar.location !== location) return false;
+                if (date && seminar.date !== date) return false;
+                if (search && !seminar.title.toLowerCase().includes(search) && 
+                    !seminar.description.toLowerCase().includes(search)) return false;
+                return true;
+            });
+
+            loadSeminars(1);
+        }
+
+        // ==================== REGISTRATION FIXED ====================
+        function startRegistration(seminarId) {
+            const seminar = seminars.find(s => s.id === seminarId);
+            if (!seminar) return;
+
+            if (seminar.registered >= seminar.quota) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Kuota Penuh',
+                    text: 'Maaf, kuota untuk seminar ini sudah penuh.',
+                    timer: 3000
+                });
+                return;
+            }
+
+            selectedSeminarId = seminarId;
+            
+            // Update modal content
+            document.getElementById('selectedSeminarTitle').textContent = seminar.title;
+            document.getElementById('selectedSeminarInfo').textContent = 
+                `${formatDate(seminar.date)} | ${seminar.time} WIB | ${seminar.location}`;
+            
+            // Reset form
+            document.getElementById('regName').value = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regPhone').value = '';
+            document.getElementById('regInstitution').value = '';
+            document.getElementById('regPosition').value = '';
+            document.getElementById('regTicketCount').value = '1';
+            document.getElementById('termsCheck').checked = false;
+            
+            // Calculate and update pricing
+            updatePaymentSummary();
+            
+            const modal = new bootstrap.Modal(document.getElementById('registrationModal'));
+            modal.show();
+        }
+
+        function updatePaymentSummary() {
+            if (!selectedSeminarId) return;
+            
+            const seminar = seminars.find(s => s.id === selectedSeminarId);
+            if (!seminar) return;
+
+            const ticketCount = parseInt(document.getElementById('regTicketCount').value) || 1;
+            const isEarlyBird = new Date() < new Date(seminar.date);
+            const pricePerTicket = isEarlyBird && seminar.earlyBirdPrice ? seminar.earlyBirdPrice : seminar.price;
+            const discount = isEarlyBird && seminar.earlyBirdPrice ? seminar.price - seminar.earlyBirdPrice : 0;
+            const subtotal = pricePerTicket * ticketCount;
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+
+            document.getElementById('ticketPrice').textContent = `Rp ${pricePerTicket.toLocaleString()}`;
+            document.getElementById('ticketCount').textContent = ticketCount;
+            document.getElementById('earlyBirdDiscount').textContent = discount > 0 ? 
+                `- Rp ${(discount * ticketCount).toLocaleString()}` : '- Rp 0';
+            document.getElementById('taxAmount').textContent = `Rp ${tax.toLocaleString()}`;
+            document.getElementById('totalPayment').textContent = `Rp ${total.toLocaleString()}`;
+        }
+
+        function submitRegistration() {
+            if (!selectedSeminarId) return;
+
+            const seminar = seminars.find(s => s.id === selectedSeminarId);
+            if (!seminar) return;
+
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const institution = document.getElementById('regInstitution').value.trim();
+            const position = document.getElementById('regPosition').value.trim();
+            const ticketCount = parseInt(document.getElementById('regTicketCount').value);
+            const agreeTerms = document.getElementById('termsCheck').checked;
+
+            if (!name || !email || !phone || !institution) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Data Tidak Lengkap',
+                    text: 'Harap isi semua field yang wajib diisi.',
+                    timer: 3000
+                });
+                return;
+            }
+
+            if (!agreeTerms) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Persetujuan Diperlukan',
+                    text: 'Anda harus menyetujui syarat dan ketentuan untuk melanjutkan.',
+                    timer: 3000
+                });
+                return;
+            }
+
+            // Calculate payment
+            const isEarlyBird = new Date() < new Date(seminar.date);
+            const pricePerTicket = isEarlyBird && seminar.earlyBirdPrice ? seminar.earlyBirdPrice : seminar.price;
+            const total = (pricePerTicket * ticketCount) * 1.1; // Including 10% tax
+
+            // Create registration code
+            const regCode = 'REG' + String(registrations.length + 1).padStart(4, '0');
+
+            // Create new registration
+            const newRegistration = {
+                id: registrations.length > 0 ? Math.max(...registrations.map(r => r.id)) + 1 : 1,
+                code: regCode,
+                seminarId: seminar.id,
+                seminarTitle: seminar.title,
+                participantName: name,
+                participantEmail: email,
+                participantPhone: phone,
+                institution: institution,
+                position: position,
+                ticketCount: ticketCount,
+                amount: total,
+                status: 'pending',
+                paymentStatus: 'unpaid',
+                registrationDate: new Date().toISOString().split('T')[0]
+            };
+
+            registrations.push(newRegistration);
+            saveToStorage('registrations', registrations);
+
+            // Update seminar registered count
+            seminar.registered += ticketCount;
+            saveToStorage('seminars', seminars);
+
+            // Add to participants if not exists
+            let participant = participants.find(p => p.email === email);
+            if (!participant) {
+                participant = {
+                    id: participants.length > 0 ? Math.max(...participants.map(p => p.id)) + 1 : 1,
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    institution: institution,
+                    position: position,
+                    seminarCount: 1
+                };
+                participants.push(participant);
+                saveToStorage('participants', participants);
+            } else {
+                participant.seminarCount++;
+                saveToStorage('participants', participants);
+            }
+
+            // Update views
+            loadSeminars(currentPage);
+            updateStats();
             
             // Close modal
-            document.getElementById('closeModal').addEventListener('click', function() {
-                document.body.removeChild(modal);
-            });
-            
-            // Close modal on background click
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    document.body.removeChild(modal);
-                }
-            });
-            
-            // Form input effects
-            const inputs = modal.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.style.borderColor = 'var(--gold)';
-                    this.style.boxShadow = '0 0 15px rgba(212, 175, 55, 0.3)';
-                });
-                input.addEventListener('blur', function() {
-                    this.style.borderColor = 'rgba(212, 175, 55, 0.4)';
-                    this.style.boxShadow = 'none';
-                });
-            });
-            
-            // Form submission
-            document.getElementById('rsvpForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const submitBtn = this.querySelector('button[type="submit"]');
-                submitBtn.innerHTML = '<i class="fas fa-check"></i> Terima Kasih!';
-                submitBtn.style.background = 'rgba(212, 175, 55, 0.1)';
-                
-                setTimeout(() => {
-                    alert('Terima kasih atas konfirmasi kehadiran Anda. Doa dan restu Anda sangat berarti bagi kami.');
-                    document.body.removeChild(modal);
-                }, 1500);
-            });
-        });
+            const modal = bootstrap.Modal.getInstance(document.getElementById('registrationModal'));
+            modal.hide();
 
-        // Directions Button
-        document.getElementById('directionsBtn').addEventListener('click', function() {
-            window.open('https://www.google.com/maps/dir//Disneyland+Park,+1313+Disneyland+Dr,+Anaheim,+CA+92802,+Amerika+Serikat/@33.8120919,-117.9207783,17z/data=!4m9!4m8!1m0!1m5!1m1!1s0x80dcd7d12b3b5e6b:0x2ef62f8418225cfa!2m2!1d-117.9185843!2d33.8120919!3e0', '_blank');
-        });
-
-        // Gold glitter effect on hover
-        document.querySelectorAll('.countdown-item, .couple-card, .event-card, .rsvp-btn, .date-box').forEach(el => {
-            el.addEventListener('mouseenter', function() {
-                this.style.boxShadow = 
-                    '0 25px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.2)';
-            });
-            
-            el.addEventListener('mouseleave', function() {
-                this.style.boxShadow = '';
-            });
-        });
-
-        // Animate gold ornaments
-        const ornaments = document.querySelectorAll('.gold-ornament');
-        ornaments.forEach((ornament, index) => {
-            ornament.style.animation = `subtleGlow ${2 + index * 0.5}s infinite alternate`;
-            ornament.style.animationDelay = `${index * 0.3}s`;
-        });
-
-        // Initialize with entrance animation
-        window.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('.header-content').style.animation = 'fadeIn 2s ease-out';
-        });
-
-        // Add periodic gold shimmer to cards
-        setInterval(() => {
-            const cards = document.querySelectorAll('.couple-card, .event-card');
-            const randomCard = cards[Math.floor(Math.random() * cards.length)];
-            
-            if (randomCard) {
-                randomCard.style.borderColor = 'rgba(212, 175, 55, 0.6)';
-                randomCard.style.boxShadow = 
-                    '0 30px 60px rgba(0, 0, 0, 0.6), 0 0 50px rgba(212, 175, 55, 0.2)';
-                
-                setTimeout(() => {
-                    randomCard.style.borderColor = 'rgba(212, 175, 55, 0.3)';
-                    randomCard.style.boxShadow = 
-                        '0 20px 40px rgba(0, 0, 0, 0.4), inset 0 0 50px rgba(212, 175, 55, 0.05)';
-                }, 2000);
-            }
-        }, 5000);
-    </script>
-</body>
-
-</html>
+            // Show success message
+            Swal.fire({
+                title: 'Pendaftaran Berhasil!',
+                html: `
+                    <div class="text-start">
+                        <p><strong>Kode Pendaftaran:</strong> ${newRegistration.code}</p>
+                        <p><strong>Nama:</strong> ${name}</p>
+                        <p><strong>Seminar:</strong> ${seminar.title}</p>
+                        <p><strong>Jumlah Tiket:</strong> ${ticketCount}</p>
+                        <p><strong>Total Pembayaran:</strong> Rp ${total.toLocaleString()}</p>
+                        <hr>
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle me-2"></i>Instruksi Pembayaran:</h6>
+                            <ol class="mb-0">
+                                <li>Transfer ke BCA 123-456-7890 a
