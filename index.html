@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SeminarPro | Sistem Manajemen Seminar Professional</title>
+    <title>SeminarPro | Sistem Manajemen Seminar</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Sistem Manajemen Seminar Professional - Kelompok 1 Basis Data dan Pemrograman">
+    <meta name="keywords" content="seminar, manajemen, pendaftaran, event, pendidikan">
+    <meta name="author" content="Kelompok 1 - 2 Logistik D">
     
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -12,13 +20,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    
+    <!-- FullCalendar -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
         :root {
@@ -33,6 +50,15 @@
             --light: #f8fafc;
             --gray: #64748b;
             --border: #e2e8f0;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -47,107 +73,96 @@
 
         /* Navigation */
         .navbar {
-            background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             padding: 1rem 0;
+            transition: all 0.3s;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
         }
 
         .navbar-brand {
+            font-family: 'Poppins', sans-serif;
             font-weight: 700;
             font-size: 1.5rem;
-            color: var(--primary);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .navbar-brand i {
-            color: var(--primary);
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         /* Buttons */
         .btn {
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 500;
             padding: 0.625rem 1.5rem;
             transition: all 0.3s;
+            border: none;
+            font-family: 'Inter', sans-serif;
         }
 
         .btn-primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
+            background: var(--gradient-primary);
+            border: none;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn-primary:hover {
-            background-color: var(--primary-dark);
-            border-color: var(--primary-dark);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-outline-primary {
-            color: var(--primary);
-            border-color: var(--primary);
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
         }
 
-        .btn-outline-primary:hover {
-            background-color: var(--primary);
-            border-color: var(--primary);
+        .btn-primary:hover::after {
+            left: 100%;
         }
 
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            color: white;
-            padding: 5rem 0;
-            margin-top: 76px;
-            border-radius: 0 0 30px 30px;
+        .btn-success {
+            background: var(--gradient-success);
+            border: none;
         }
 
         /* Cards */
         .card {
             border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: all 0.3s;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s;
             overflow: hidden;
             margin-bottom: 1.5rem;
-            height: 100%;
+            background: white;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
-        /* Seminar Cards */
-        .seminar-card {
-            height: 100%;
-        }
-
-        .seminar-image {
-            height: 180px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .seminar-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .seminar-card:hover .seminar-image img {
-            transform: scale(1.05);
-        }
-
-        .seminar-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--primary);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem;
             font-weight: 600;
+            font-family: 'Poppins', sans-serif;
         }
 
         /* Sidebar */
@@ -156,12 +171,13 @@
             top: 76px;
             left: 0;
             bottom: 0;
-            width: 260px;
+            width: 280px;
             background: white;
             border-right: 1px solid var(--border);
-            padding: 2rem 1rem;
+            padding: 2rem 0;
             overflow-y: auto;
             z-index: 1000;
+            transition: transform 0.3s ease;
         }
 
         .sidebar-menu {
@@ -173,59 +189,202 @@
         .menu-item {
             display: flex;
             align-items: center;
-            padding: 0.75rem 1rem;
-            margin-bottom: 0.5rem;
+            padding: 1rem 1.5rem;
+            margin: 0.25rem 1rem;
             color: var(--dark);
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 12px;
             transition: all 0.3s;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
         .menu-item:hover {
             background: var(--primary-light);
             color: var(--primary);
+            transform: translateX(5px);
         }
 
         .menu-item.active {
             background: var(--primary);
             color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
         .menu-item i {
             width: 24px;
-            margin-right: 0.75rem;
+            margin-right: 1rem;
             font-size: 1.1rem;
         }
 
+        .menu-item .badge {
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         .main-content {
-            margin-left: 260px;
-            padding: 2rem;
+            margin-left: 280px;
+            padding: 2.5rem;
+            min-height: calc(100vh - 76px);
             flex: 1;
+            transition: margin-left 0.3s ease;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar-toggle {
+                display: block !important;
+            }
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 6rem 0;
+            margin-top: 76px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.1;
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            color: white;
+            padding: 1.5rem;
+            height: 100%;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .label {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Seminar Cards */
+        .seminar-card {
+            border: none;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .seminar-card .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .seminar-card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .seminar-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
         }
 
         /* Status Badges */
         .status-badge {
-            padding: 0.25rem 0.75rem;
+            padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
             display: inline-block;
         }
 
-        .status-active { background: #d1fae5; color: #065f46; }
-        .status-pending { background: #fef3c7; color: #92400e; }
-        .status-cancelled { background: #fee2e2; color: #991b1b; }
-        .status-completed { background: #dbeafe; color: #1e40af; }
-        .status-paid { background: #d1fae5; color: #065f46; }
-        .status-unpaid { background: #fee2e2; color: #991b1b; }
+        .status-active { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; }
+        .status-pending { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; }
+        .status-cancelled { background: linear-gradient(135deg, #fee2e2, #fecaca); color: #991b1b; }
+        .status-completed { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af; }
+        .status-paid { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #065f46; }
+        .status-unpaid { background: linear-gradient(135deg, #fee2e2, #fecaca); color: #991b1b; }
+
+        /* Progress Bar */
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            border-radius: 5px;
+        }
+
+        /* Modal */
+        .modal-content {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
 
         /* Footer */
         .footer {
-            background: var(--dark);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             color: white;
-            padding: 3rem 0;
+            padding: 4rem 0 2rem;
             margin-top: auto;
+        }
+
+        .footer h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
         }
 
         .footer a {
@@ -238,54 +397,124 @@
             color: white;
         }
 
-        .footer-bottom {
-            border-top: 1px solid #374151;
-            padding-top: 1.5rem;
-            margin-top: 2rem;
-            color: #94a3b8;
-            font-size: 0.875rem;
-        }
-
-        /* Pagination */
-        .pagination-container {
-            margin-top: 2rem;
-            display: flex;
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            margin-right: 0.5rem;
+            transition: all 0.3s;
         }
 
-        .pagination .page-item.active .page-link {
-            background-color: var(--primary);
-            border-color: var(--primary);
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
         }
 
-        /* Registration Form */
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+        /* Calendar */
+        #calendar {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        /* DataTables Custom */
+        .dataTables_wrapper {
+            padding: 1rem;
+        }
+
+        .dataTables_length select {
+            border-radius: 8px;
+            padding: 0.375rem 0.75rem;
+        }
+
+        /* Utility */
+        .cursor-pointer { cursor: pointer; }
+        .shadow-lg { box-shadow: 0 10px 40px rgba(0,0,0,0.1) !important; }
+        .transition-all { transition: all 0.3s; }
+        .hover-lift:hover { transform: translateY(-3px); }
+        .text-gradient {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(37, 99, 235, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Back to Top */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.6);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .sidebar {
-                position: static;
-                width: 100%;
-                height: auto;
-                margin-bottom: 2rem;
-            }
-            
             .main-content {
-                margin-left: 0;
                 padding: 1rem;
             }
             
             .hero-section {
-                padding: 3rem 0;
-                border-radius: 0;
+                padding: 4rem 0;
             }
             
-            .hero-section h1 {
-                font-size: 2rem;
+            .stat-card {
+                margin-bottom: 1rem;
             }
+            
+            .btn {
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        /* Animations */
+        [data-aos] {
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        [data-aos].aos-animate {
+            opacity: 1;
         }
     </style>
 </head>
@@ -293,17 +522,26 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
+            <button class="btn btn-link sidebar-toggle d-lg-none me-2" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
             <a class="navbar-brand" href="#">
-                <i class="fas fa-chalkboard-teacher me-2"></i>SeminarPro
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>SeminarPro</span>
             </a>
+            
             <div class="d-flex align-items-center">
                 <div class="dropdown">
                     <button class="btn btn-outline-primary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
                         <i class="fas fa-user-circle me-1"></i>
-                        <span id="currentUser">Pengunjung</span>
+                        <span id="currentUser">Admin Sistem</span>
                     </button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#" onclick="showProfile()"><i class="fas fa-user me-2"></i>Profil</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="showSettings()"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="exportData()"><i class="fas fa-download me-2"></i>Export Data</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="importData()"><i class="fas fa-upload me-2"></i>Import Data</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="#" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                     </ul>
@@ -314,63 +552,112 @@
 
     <!-- Sidebar -->
     <div id="adminSidebar" class="sidebar d-none">
-        <div class="sidebar-header mb-4">
-            <h5 class="mb-0"><i class="fas fa-bars me-2"></i>Menu Admin</h5>
+        <div class="sidebar-header px-3 mb-4">
+            <h5 class="mb-0 text-primary"><i class="fas fa-bars me-2"></i>Menu Admin</h5>
         </div>
         <ul class="sidebar-menu">
-            <li><a class="menu-item active" onclick="showSection('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li><a class="menu-item" onclick="showSection('seminars')"><i class="fas fa-chalkboard-teacher"></i> Kelola Seminar</a></li>
-            <li><a class="menu-item" onclick="showSection('registrations')"><i class="fas fa-clipboard-list"></i> Pendaftaran</a></li>
-            <li><a class="menu-item" onclick="showSection('participants')"><i class="fas fa-users"></i> Peserta</a></li>
-            <li><a class="menu-item" onclick="showSection('speakers')"><i class="fas fa-microphone"></i> Pembicara</a></li>
-            <li><a class="menu-item" onclick="showSection('reports')"><i class="fas fa-chart-bar"></i> Laporan</a></li>
+            <li><a class="menu-item active" onclick="showSection('dashboard')">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+                <span class="badge bg-primary" id="dashboardBadge">0</span>
+            </a></li>
+            <li><a class="menu-item" onclick="showSection('calendar')">
+                <i class="fas fa-calendar-alt"></i> Kalender
+            </a></li>
+            <li><a class="menu-item" onclick="showSection('seminars')">
+                <i class="fas fa-chalkboard-teacher"></i> Kelola Seminar
+                <span class="badge bg-success" id="seminarBadge">0</span>
+            </a></li>
+            <li><a class="menu-item" onclick="showSection('registrations')">
+                <i class="fas fa-clipboard-list"></i> Pendaftaran
+                <span class="badge bg-warning" id="registrationBadge">0</span>
+            </a></li>
+            <li><a class="menu-item" onclick="showSection('participants')">
+                <i class="fas fa-users"></i> Peserta
+                <span class="badge bg-info" id="participantBadge">0</span>
+            </a></li>
+            <li><a class="menu-item" onclick="showSection('speakers')">
+                <i class="fas fa-microphone"></i> Pembicara
+                <span class="badge bg-secondary" id="speakerBadge">0</span>
+            </a></li>
+            <li><a class="menu-item" onclick="showSection('certificates')">
+                <i class="fas fa-certificate"></i> Sertifikat
+                <span class="badge bg-success" id="certificateBadge">0</span>
+            </a></li>
+            <li><a class="menu-item" onclick="showSection('waitingList')">
+                <i class="fas fa-clock"></i> Waiting List
+                <span class="badge bg-danger" id="waitingListBadge">0</span>
+            </a></li>
+            <li><a class="menu-item" onclick="showSection('reports')">
+                <i class="fas fa-chart-bar"></i> Laporan
+            </a></li>
+            <li><a class="menu-item" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i> Pengaturan
+            </a></li>
         </ul>
+        
+        <div class="mt-auto px-3 py-4">
+            <div class="card bg-light border-0">
+                <div class="card-body text-center">
+                    <small class="text-muted">Version 2.0.0</small>
+                    <div class="mt-2">
+                        <small class="text-muted">Kelompok 1 - 2 Logistik D</small>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <div id="mainContent" class="main-content">
         <!-- User View -->
         <div id="userView">
             <!-- Hero Section -->
-            <section class="hero-section">
+            <section class="hero-section" data-aos="fade-down">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6">
-                            <h1 class="display-5 fw-bold mb-3">Tingkatkan Pengetahuan dengan Seminar Berkualitas</h1>
-                            <p class="lead mb-4">Daftar seminar online dan offline dengan pembicara terbaik di bidangnya. Platform terpercaya untuk pengembangan karir dan bisnis.</p>
+                            <h1 class="display-4 fw-bold mb-4">Sistem Manajemen Seminar Professional</h1>
+                            <p class="lead mb-4">Platform terintegrasi untuk manajemen seminar, pendaftaran peserta, dan administrasi yang efisien.</p>
                             <div class="d-flex flex-wrap gap-3">
                                 <button class="btn btn-light btn-lg" onclick="scrollToSeminars()">
                                     <i class="fas fa-calendar-alt me-2"></i>Lihat Seminar
                                 </button>
+                                <button class="btn btn-outline-light btn-lg" onclick="showCalendar()">
+                                    <i class="fas fa-calendar me-2"></i>Kalender
+                                </button>
                                 <button class="btn btn-outline-light btn-lg" onclick="switchToAdmin()">
                                     <i class="fas fa-user-shield me-2"></i>Admin Login
-                                </button>
-                                <button class="btn btn-light btn-lg" onclick="window.location.href='#footer'">
-                                    <i class="fas fa-question-circle me-2"></i>Bantuan
                                 </button>
                             </div>
                         </div>
                         <div class="col-lg-6">
-                            <div class="card bg-white text-dark mt-4 mt-lg-0">
-                                <div class="card-body p-4">
-                                    <h5 class="card-title mb-3"><i class="fas fa-chart-line me-2"></i>Statistik Platform</h5>
-                                    <div class="row text-center">
-                                        <div class="col-6 mb-3">
-                                            <div class="display-6 fw-bold" id="statSeminars">0</div>
-                                            <div class="text-muted">Seminar Aktif</div>
-                                        </div>
-                                        <div class="col-6 mb-3">
-                                            <div class="display-6 fw-bold" id="statParticipants">0</div>
-                                            <div class="text-muted">Peserta</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="display-6 fw-bold" id="statSpeakers">0</div>
-                                            <div class="text-muted">Pembicara</div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="display-6 fw-bold text-success" id="statSatisfaction">98%</div>
-                                            <div class="text-muted">Kepuasan</div>
-                                        </div>
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="stat-card" style="background: var(--gradient-primary);">
+                                        <i class="fas fa-users"></i>
+                                        <div class="number" id="statParticipants">0</div>
+                                        <div class="label">Peserta Terdaftar</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="stat-card" style="background: var(--gradient-success);">
+                                        <i class="fas fa-chalkboard-teacher"></i>
+                                        <div class="number" id="statSeminars">0</div>
+                                        <div class="label">Seminar Aktif</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="stat-card" style="background: var(--gradient-secondary);">
+                                        <i class="fas fa-microphone"></i>
+                                        <div class="number" id="statSpeakers">0</div>
+                                        <div class="label">Pembicara</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="stat-card" style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        <div class="number" id="statRevenue">Rp 0</div>
+                                        <div class="label">Total Revenue</div>
                                     </div>
                                 </div>
                             </div>
@@ -379,108 +666,96 @@
                 </div>
             </section>
 
-            <!-- Seminar List -->
-            <section class="py-5" id="seminarsSection">
+            <!-- Featured Seminars -->
+            <section class="py-5 bg-light" id="featuredSeminars">
                 <div class="container">
-                    <div class="text-center mb-5">
-                        <h2 class="display-6 fw-bold mb-3">Daftar Seminar Tersedia</h2>
-                        <p class="lead text-muted">Pilih seminar yang sesuai dengan minat dan kebutuhan perkembangan karier Anda</p>
+                    <div class="text-center mb-5" data-aos="fade-up">
+                        <h2 class="display-5 fw-bold mb-3 text-gradient">Seminar Unggulan</h2>
+                        <p class="lead text-muted">Pilih dari berbagai seminar professional yang sesuai dengan kebutuhan Anda</p>
                     </div>
-
-                    <!-- Filter Section -->
-                    <div class="row mb-4">
-                        <div class="col-md-3">
-                            <select class="form-select" id="filterCategory" onchange="filterSeminars()">
-                                <option value="">Semua Kategori</option>
-                                <option value="technology">Teknologi</option>
-                                <option value="business">Bisnis</option>
-                                <option value="marketing">Marketing</option>
-                                <option value="finance">Keuangan</option>
-                                <option value="leadership">Leadership</option>
-                                <option value="health">Kesehatan</option>
-                                <option value="education">Pendidikan</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-select" id="filterLocation" onchange="filterSeminars()">
-                                <option value="">Semua Lokasi</option>
-                                <option value="Jakarta">Jakarta</option>
-                                <option value="Bandung">Bandung</option>
-                                <option value="Surabaya">Surabaya</option>
-                                <option value="Online">Online</option>
-                                <option value="Hybrid">Hybrid</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <input type="date" class="form-control" id="filterDate" onchange="filterSeminars()">
-                        </div>
-                        <div class="col-md-3">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="searchSeminar" placeholder="Cari seminar..." onkeyup="filterSeminars()">
-                                <button class="btn btn-outline-primary" type="button">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
+                    
+                    <div class="row g-4" id="featuredSeminarList">
+                        <!-- Featured seminars will be loaded here -->
                     </div>
-
-                    <!-- Seminar Grid -->
-                    <div class="row" id="seminarList">
-                        <!-- Seminar cards will be loaded here -->
-                    </div>
-
-                    <!-- Pagination -->
-                    <div class="pagination-container">
-                        <nav>
-                            <ul class="pagination" id="pagination">
-                                <!-- Pagination will be generated here -->
-                            </ul>
-                        </nav>
+                    
+                    <div class="text-center mt-5">
+                        <button class="btn btn-primary btn-lg" onclick="scrollToSeminars()">
+                            <i class="fas fa-eye me-2"></i>Lihat Semua Seminar
+                        </button>
                     </div>
                 </div>
             </section>
 
-            <!-- How It Works -->
+            <!-- All Seminars -->
+            <section class="py-5" id="seminarsSection">
+                <div class="container">
+                    <div class="d-flex justify-content-between align-items-center mb-5" data-aos="fade-up">
+                        <div>
+                            <h2 class="display-5 fw-bold text-gradient mb-2">Seminar Tersedia</h2>
+                            <p class="text-muted">Temukan seminar yang tepat untuk pengembangan diri Anda</p>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-primary" onclick="filterSeminars('all')">Semua</button>
+                            <button class="btn btn-outline-primary" onclick="filterSeminars('technology')">Teknologi</button>
+                            <button class="btn btn-outline-primary" onclick="filterSeminars('business')">Bisnis</button>
+                            <button class="btn btn-outline-primary" onclick="filterSeminars('marketing')">Marketing</button>
+                        </div>
+                    </div>
+                    
+                    <div class="row" id="seminarList">
+                        <!-- Seminar cards will be loaded here -->
+                    </div>
+                    
+                    <div class="text-center mt-5" id="noSeminarsMessage" style="display: none;">
+                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted">Belum ada seminar tersedia</h4>
+                        <p class="text-muted">Silakan hubungi administrator untuk informasi lebih lanjut</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials -->
             <section class="py-5 bg-light">
                 <div class="container">
-                    <div class="text-center mb-5">
-                        <h2 class="display-6 fw-bold mb-3">Cara Mendaftar</h2>
-                        <p class="lead text-muted">Ikuti 4 langkah mudah untuk mengikuti seminar pilihan Anda</p>
+                    <div class="text-center mb-5" data-aos="fade-up">
+                        <h2 class="display-5 fw-bold mb-3 text-gradient">Apa Kata Peserta</h2>
+                        <p class="lead text-muted">Testimoni dari peserta yang telah mengikuti seminar kami</p>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 mb-4">
-                            <div class="card border-0 text-center h-100">
-                                <div class="card-body">
-                                    <div class="display-4 text-primary mb-3">1</div>
-                                    <h5 class="card-title">Pilih Seminar</h5>
-                                    <p class="card-text text-muted">Pilih seminar yang sesuai dengan minat dan jadwal Anda</p>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-4">
+                                    <div class="mb-3">
+                                        <i class="fas fa-quote-left fa-2x text-primary opacity-25"></i>
+                                    </div>
+                                    <p class="card-text mb-4">"Seminar yang sangat informatif dan well-organized. Pembicaranya kompeten dan materinya sangat aplikatif."</p>
+                                    <h5 class="card-title mb-1">Budi Santoso</h5>
+                                    <p class="text-muted">Manager, PT. Maju Jaya</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 mb-4">
-                            <div class="card border-0 text-center h-100">
-                                <div class="card-body">
-                                    <div class="display-4 text-primary mb-3">2</div>
-                                    <h5 class="card-title">Isi Formulir</h5>
-                                    <p class="card-text text-muted">Isi data diri lengkap untuk pendaftaran</p>
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-4">
+                                    <div class="mb-3">
+                                        <i class="fas fa-quote-left fa-2x text-primary opacity-25"></i>
+                                    </div>
+                                    <p class="card-text mb-4">"Sistem pendaftarannya mudah dan efisien. Admin responsif dan helpful. Sangat recommended!"</p>
+                                    <h5 class="card-title mb-1">Sari Dewi</h5>
+                                    <p class="text-muted">Digital Marketer</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 mb-4">
-                            <div class="card border-0 text-center h-100">
-                                <div class="card-body">
-                                    <div class="display-4 text-primary mb-3">3</div>
-                                    <h5 class="card-title">Bayar</h5>
-                                    <p class="card-text text-muted">Lakukan pembayaran sesuai instruksi</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 mb-4">
-                            <div class="card border-0 text-center h-100">
-                                <div class="card-body">
-                                    <div class="display-4 text-primary mb-3">4</div>
-                                    <h5 class="card-title">Konfirmasi</h5>
-                                    <p class="card-text text-muted">Dapatkan konfirmasi dan akses seminar</p>
+                        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                            <div class="card h-100">
+                                <div class="card-body text-center p-4">
+                                    <div class="mb-3">
+                                        <i class="fas fa-quote-left fa-2x text-primary opacity-25"></i>
+                                    </div>
+                                    <p class="card-text mb-4">"Platform yang sangat user-friendly. Dari pendaftaran sampai mendapatkan sertifikat semua berjalan lancar."</p>
+                                    <h5 class="card-title mb-1">Andi Wijaya</h5>
+                                    <p class="text-muted">AI Researcher</p>
                                 </div>
                             </div>
                         </div>
@@ -493,51 +768,117 @@
         <div id="adminView" class="d-none">
             <!-- Dashboard -->
             <div id="dashboard" class="admin-section">
-                <h2 class="mb-4"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h2>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="display-6 fw-bold text-gradient"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-primary" onclick="refreshDashboard()">
+                            <i class="fas fa-sync-alt me-2"></i>Refresh
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="printDashboard()">
+                            <i class="fas fa-print me-2"></i>Print
+                        </button>
+                    </div>
+                </div>
                 
                 <!-- Stats Cards -->
-                <div class="row">
-                    <div class="col-md-3 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <div class="text-primary mb-2">
-                                    <i class="fas fa-users fa-2x"></i>
+                <div class="row g-4 mb-4">
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Total Peserta</h6>
+                                        <h3 class="mb-0" id="adminStatParticipants">0</h3>
+                                    </div>
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                                        <i class="fas fa-users fa-2x text-primary"></i>
+                                    </div>
                                 </div>
-                                <h3 class="card-title" id="adminStatParticipants">0</h3>
-                                <p class="card-text text-muted">Total Peserta</p>
+                                <div class="mt-3">
+                                    <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 12%</span>
+                                    <span class="text-muted">dari bulan lalu</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <div class="text-success mb-2">
-                                    <i class="fas fa-money-bill-wave fa-2x"></i>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Total Revenue</h6>
+                                        <h3 class="mb-0" id="adminStatRevenue">Rp 0</h3>
+                                    </div>
+                                    <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+                                        <i class="fas fa-money-bill-wave fa-2x text-success"></i>
+                                    </div>
                                 </div>
-                                <h3 class="card-title" id="adminStatRevenue">Rp 0</h3>
-                                <p class="card-text text-muted">Total Revenue</p>
+                                <div class="mt-3">
+                                    <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 24%</span>
+                                    <span class="text-muted">dari bulan lalu</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <div class="text-warning mb-2">
-                                    <i class="fas fa-calendar-check fa-2x"></i>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Seminar Aktif</h6>
+                                        <h3 class="mb-0" id="adminStatSeminars">0</h3>
+                                    </div>
+                                    <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
+                                        <i class="fas fa-calendar-check fa-2x text-warning"></i>
+                                    </div>
                                 </div>
-                                <h3 class="card-title" id="adminStatSeminars">0</h3>
-                                <p class="card-text text-muted">Seminar Aktif</p>
+                                <div class="mt-3">
+                                    <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 8%</span>
+                                    <span class="text-muted">dari bulan lalu</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <div class="text-danger mb-2">
-                                    <i class="fas fa-clock fa-2x"></i>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Pending</h6>
+                                        <h3 class="mb-0" id="adminStatPending">0</h3>
+                                    </div>
+                                    <div class="bg-danger bg-opacity-10 p-3 rounded-circle">
+                                        <i class="fas fa-clock fa-2x text-danger"></i>
+                                    </div>
                                 </div>
-                                <h3 class="card-title" id="adminStatPending">0</h3>
-                                <p class="card-text text-muted">Menunggu Konfirmasi</p>
+                                <div class="mt-3">
+                                    <span class="text-danger"><i class="fas fa-arrow-down me-1"></i> 4%</span>
+                                    <span class="text-muted">dari bulan lalu</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Statistik Pendaftaran (30 Hari)</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="registrationChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Status Pembayaran</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="paymentChart" height="250"></canvas>
                             </div>
                         </div>
                     </div>
@@ -547,7 +888,12 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Pendaftaran Terbaru</h5>
-                        <button class="btn btn-sm btn-primary" onclick="showSection('registrations')">Lihat Semua</button>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-primary" onclick="showSection('registrations')">Lihat Semua</button>
+                            <button class="btn btn-sm btn-primary" onclick="loadRecentRegistrations()">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -559,6 +905,7 @@
                                         <th>Seminar</th>
                                         <th>Tanggal</th>
                                         <th>Status</th>
+                                        <th>Total</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -571,19 +918,41 @@
                 </div>
             </div>
 
+            <!-- Calendar View -->
+            <div id="calendar" class="admin-section d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="display-6 fw-bold text-gradient"><i class="fas fa-calendar-alt me-2"></i>Kalender Seminar</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="addSeminarFromCalendar()">
+                            <i class="fas fa-plus me-2"></i>Tambah Seminar
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div id="calendarView"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Manage Seminars -->
             <div id="seminars" class="admin-section d-none">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2><i class="fas fa-chalkboard-teacher me-2"></i>Kelola Seminar</h2>
-                    <button class="btn btn-primary" onclick="showAddSeminarModal()">
-                        <i class="fas fa-plus me-2"></i>Tambah Seminar
-                    </button>
+                    <h2 class="display-6 fw-bold text-gradient"><i class="fas fa-chalkboard-teacher me-2"></i>Kelola Seminar</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="showAddSeminarModal()">
+                            <i class="fas fa-plus me-2"></i>Tambah Seminar
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="exportSeminars()">
+                            <i class="fas fa-download me-2"></i>Export
+                        </button>
+                    </div>
                 </div>
 
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="seminarsTable">
                                 <thead>
                                     <tr>
                                         <th>Kode</th>
@@ -591,11 +960,12 @@
                                         <th>Tanggal</th>
                                         <th>Lokasi</th>
                                         <th>Kuota</th>
+                                        <th>Harga</th>
                                         <th>Status</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="seminarsTable">
+                                <tbody>
                                     <!-- Will be populated -->
                                 </tbody>
                             </table>
@@ -606,12 +976,19 @@
 
             <!-- Manage Registrations -->
             <div id="registrations" class="admin-section d-none">
-                <h2 class="mb-4"><i class="fas fa-clipboard-list me-2"></i>Kelola Pendaftaran</h2>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="display-6 fw-bold text-gradient"><i class="fas fa-clipboard-list me-2"></i>Kelola Pendaftaran</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-primary" onclick="exportRegistrations()">
+                            <i class="fas fa-download me-2"></i>Export
+                        </button>
+                    </div>
+                </div>
 
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="registrationsTable">
                                 <thead>
                                     <tr>
                                         <th>Kode</th>
@@ -620,10 +997,11 @@
                                         <th>Tanggal</th>
                                         <th>Status</th>
                                         <th>Pembayaran</th>
+                                        <th>Total</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="registrationsTable">
+                                <tbody>
                                     <!-- Will be populated -->
                                 </tbody>
                             </table>
@@ -634,23 +1012,31 @@
 
             <!-- Manage Participants -->
             <div id="participants" class="admin-section d-none">
-                <h2 class="mb-4"><i class="fas fa-users me-2"></i>Kelola Peserta</h2>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="display-6 fw-bold text-gradient"><i class="fas fa-users me-2"></i>Kelola Peserta</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-primary" onclick="exportParticipants()">
+                            <i class="fas fa-download me-2"></i>Export
+                        </button>
+                    </div>
+                </div>
 
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="participantsTable">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Nama</th>
                                         <th>Email</th>
                                         <th>Telepon</th>
-                                        <th>Seminar Diikuti</th>
+                                        <th>Instansi</th>
+                                        <th>Seminar</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="participantsTable">
+                                <tbody>
                                     <!-- Will be populated -->
                                 </tbody>
                             </table>
@@ -662,27 +1048,102 @@
             <!-- Manage Speakers -->
             <div id="speakers" class="admin-section d-none">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2><i class="fas fa-microphone me-2"></i>Kelola Pembicara</h2>
-                    <button class="btn btn-primary" onclick="showAddSpeakerModal()">
-                        <i class="fas fa-plus me-2"></i>Tambah Pembicara
-                    </button>
+                    <h2 class="display-6 fw-bold text-gradient"><i class="fas fa-microphone me-2"></i>Kelola Pembicara</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="showAddSpeakerModal()">
+                            <i class="fas fa-plus me-2"></i>Tambah Pembicara
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="exportSpeakers()">
+                            <i class="fas fa-download me-2"></i>Export
+                        </button>
+                    </div>
                 </div>
 
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="speakersTable">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th>Nama</th>
                                         <th>Spesialisasi</th>
                                         <th>Email</th>
-                                        <th>Jumlah Seminar</th>
+                                        <th>Telepon</th>
+                                        <th>Seminar</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody id="speakersTable">
+                                <tbody>
+                                    <!-- Will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificates -->
+            <div id="certificates" class="admin-section d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="display-6 fw-bold text-gradient"><i class="fas fa-certificate me-2"></i>Kelola Sertifikat</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="generateCertificate()">
+                            <i class="fas fa-plus me-2"></i>Buat Sertifikat
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="bulkGenerateCertificates()">
+                            <i class="fas fa-copy me-2"></i>Generate Massal
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="certificatesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Kode</th>
+                                        <th>Nama</th>
+                                        <th>Seminar</th>
+                                        <th>Tanggal</th>
+                                        <th>Status</th>
+                                        <th>Sertifikat</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Waiting List -->
+            <div id="waitingList" class="admin-section d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="display-6 fw-bold text-gradient"><i class="fas fa-clock me-2"></i>Waiting List</h2>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="waitingListTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>Seminar</th>
+                                        <th>Tanggal</th>
+                                        <th>Prioritas</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     <!-- Will be populated -->
                                 </tbody>
                             </table>
@@ -693,34 +1154,54 @@
 
             <!-- Reports -->
             <div id="reports" class="admin-section d-none">
-                <h2 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Laporan</h2>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="display-6 fw-bold text-gradient"><i class="fas fa-chart-bar me-2"></i>Laporan & Analytics</h2>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="generateReport()">
+                            <i class="fas fa-download me-2"></i>Generate Report
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="printReport()">
+                            <i class="fas fa-print me-2"></i>Print
+                        </button>
+                    </div>
+                </div>
 
-                <div class="row mb-4">
-                    <div class="col-md-6">
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-8">
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="mb-0">Filter Laporan</h5>
                             </div>
                             <div class="card-body">
                                 <div class="row g-3">
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Jenis Laporan</label>
+                                        <select class="form-select" id="reportType">
+                                            <option value="daily">Harian</option>
+                                            <option value="weekly">Mingguan</option>
+                                            <option value="monthly">Bulanan</option>
+                                            <option value="yearly">Tahunan</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
                                         <label class="form-label">Dari Tanggal</label>
                                         <input type="date" class="form-control" id="reportFromDate">
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <label class="form-label">Sampai Tanggal</label>
                                         <input type="date" class="form-control" id="reportToDate">
                                     </div>
-                                    <div class="col-12">
-                                        <button class="btn btn-primary w-100" onclick="generateReport()">
-                                            <i class="fas fa-download me-2"></i>Generate Report
-                                        </button>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Seminar</label>
+                                        <select class="form-select" id="reportSeminar">
+                                            <option value="all">Semua Seminar</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-lg-4">
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="mb-0">Ringkasan</h5>
@@ -735,15 +1216,170 @@
                                         <h6>Total Revenue</h6>
                                         <h3 id="reportTotalRev">Rp 0</h3>
                                     </div>
+                                    <div class="col-6">
+                                        <h6>Rata-rata/Hari</h6>
+                                        <h5 id="reportAvgDaily">Rp 0</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        <h6>Konversi</h6>
+                                        <h5 id="reportConversion">0%</h5>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <canvas id="reportChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <canvas id="categoryChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Report -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Detail Laporan</h5>
+                    </div>
                     <div class="card-body">
-                        <canvas id="reportChart" height="100"></canvas>
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="detailedReportTable">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Seminar</th>
+                                        <th>Pendaftar</th>
+                                        <th>Pendapatan</th>
+                                        <th>Status</th>
+                                        <th>Rata-rata Tiket</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Will be populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div id="settings" class="admin-section d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="display-6 fw-bold text-gradient"><i class="fas fa-cog me-2"></i>Pengaturan Sistem</h2>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Pengaturan Umum</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="generalSettings">
+                                    <div class="mb-3">
+                                        <label class="form-label">Nama Sistem</label>
+                                        <input type="text" class="form-control" id="systemName" value="SeminarPro">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email Administrator</label>
+                                        <input type="email" class="form-control" id="adminEmail" value="admin@seminarpro.com">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Telepon</label>
+                                        <input type="text" class="form-control" id="systemPhone" value="(021) 1234-5678">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Alamat</label>
+                                        <textarea class="form-control" id="systemAddress" rows="3">Jl. Seminar No. 123, Jakarta</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Pengaturan Pembayaran</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="paymentSettings">
+                                    <div class="mb-3">
+                                        <label class="form-label">Pajak (%)</label>
+                                        <input type="number" class="form-control" id="taxRate" value="10" min="0" max="100">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Diskon Early Bird (%)</label>
+                                        <input type="number" class="form-control" id="earlyBirdDiscount" value="20" min="0" max="100">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Bank Transfer</label>
+                                        <input type="text" class="form-control" id="bankAccount" value="BCA 123-456-7890 a.n. SeminarPro">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Batas Pembayaran (jam)</label>
+                                        <input type="number" class="form-control" id="paymentDeadline" value="24" min="1">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Backup & Restore</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-grid gap-3">
+                                    <button class="btn btn-outline-primary" onclick="backupDatabase()">
+                                        <i class="fas fa-database me-2"></i>Backup Database
+                                    </button>
+                                    <button class="btn btn-outline-success" onclick="restoreDatabase()">
+                                        <i class="fas fa-redo me-2"></i>Restore Database
+                                    </button>
+                                    <button class="btn btn-outline-danger" onclick="clearDatabase()">
+                                        <i class="fas fa-trash me-2"></i>Reset Database
+                                    </button>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <h6>Informasi Sistem</h6>
+                                    <div class="list-group">
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span>Versi</span>
+                                            <span class="fw-bold">2.0.0</span>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span>Data Seminar</span>
+                                            <span id="seminarCountInfo">0</span>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span>Data Peserta</span>
+                                            <span id="participantCountInfo">0</span>
+                                        </div>
+                                        <div class="list-group-item d-flex justify-content-between">
+                                            <span>Ukuran Database</span>
+                                            <span id="dbSizeInfo">0 KB</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -751,91 +1387,141 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer" id="footer">
+    <footer class="footer">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h4 class="mb-3">SeminarPro</h4>
-                    <p class="mb-3">Platform professional untuk manajemen dan pendaftaran seminar dengan sistem terintegrasi terbaik di Indonesia.</p>
-                    <div class="d-flex gap-3">
-                        <a href="#"><i class="fab fa-facebook fa-lg"></i></a>
-                        <a href="#"><i class="fab fa-twitter fa-lg"></i></a>
-                        <a href="#"><i class="fab fa-instagram fa-lg"></i></a>
-                        <a href="#"><i class="fab fa-linkedin fa-lg"></i></a>
-                        <a href="#"><i class="fab fa-youtube fa-lg"></i></a>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="text-white mb-4">
+                        <i class="fas fa-chalkboard-teacher me-2"></i>SeminarPro
+                    </h5>
+                    <p class="text-light mb-4">
+                        Platform manajemen seminar profesional yang membantu Anda mengelola 
+                        acara, pendaftaran peserta, dan administrasi dengan mudah dan efisien.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-4 mb-4">
-                    <h5 class="mb-3">Menu</h5>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="text-white mb-4">Menu</h5>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#seminarsSection">Seminar</a></li>
-                        <li class="mb-2"><a href="#" onclick="switchToAdmin()">Admin Login</a></li>
-                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">Tentang Kami</a></li>
-                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#contactModal">Kontak</a></li>
+                        <li class="mb-2"><a href="#seminarsSection" class="text-light text-decoration-none" onclick="scrollToSeminars()">Seminar</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none" onclick="switchToAdmin()">Admin</a></li>
+                        <li class="mb-2"><a href="#" class="text-light text-decoration-none" onclick="showProfile()">Profil</a></li>
+                        <li><a href="#" class="text-light text-decoration-none" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-3 col-md-4 mb-4">
-                    <h5 class="mb-3">Layanan</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="#">Buat Seminar</a></li>
-                        <li class="mb-2"><a href="#">Sponsorship</a></li>
-                        <li class="mb-2"><a href="#">Partner Program</a></li>
-                        <li class="mb-2"><a href="#">API Integration</a></li>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Kontak</h5>
+                    <ul class="list-unstyled text-light">
+                        <li class="mb-3">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Jl. Seminar No. 123, Jakarta
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-phone me-2"></i>
+                            (021) 1234-5678
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-envelope me-2"></i>
+                            info@seminarpro.com
+                        </li>
+                        <li>
+                            <i class="fas fa-clock me-2"></i>
+                            Senin - Jumat: 9:00 - 17:00
+                        </li>
                     </ul>
                 </div>
-                <div class="col-lg-3 col-md-4 mb-4">
-                    <h5 class="mb-3">Kontak</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> Jakarta, Indonesia</li>
-                        <li class="mb-2"><i class="fas fa-phone me-2"></i> +62 812-3456-7890</li>
-                        <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@seminarpro.com</li>
-                        <li><i class="fas fa-clock me-2"></i> Senin - Jumat: 9:00 - 17:00</li>
-                    </ul>
+                
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="text-white mb-4">Newsletter</h5>
+                    <p class="text-light mb-3">Berlangganan untuk mendapatkan info seminar terbaru</p>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Email Anda" id="newsletterEmail">
+                        <button class="btn btn-primary" type="button" onclick="subscribeNewsletter()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <small class="text-light">Kami tidak akan membagikan email Anda</small>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <p class="mb-0">&copy; 2024 SeminarPro. Hak Cipta Dilindungi.</p>
-                    </div>
-                    <div class="col-md-6 text-md-end">
-                        <a href="#" class="me-3" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
-                    </div>
+            
+            <hr class="border-light my-4">
+            
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 text-light">
+                        &copy; 2026 SeminarPro. Hak Cipta Dilindungi.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0 text-light">
+                        <strong>Kelompok 1 - 2 Logistik D</strong>
+                    </p>
+                    <small class="text-light">
+                        Mata Kuliah: Basis Data dan Pemrograman<br>
+                        Anggota: Habiby, Risma, Hafizh, Laisya, Mifan
+                    </small>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Modals -->
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
+    <!-- Modals -->
+    
     <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Login Admin</h5>
+                    <h5 class="modal-title">Login Admin SeminarPro</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-user-shield fa-3x text-primary mb-3"></i>
+                        <h4>Selamat Datang</h4>
+                        <p class="text-muted">Silakan login untuk mengakses dashboard admin</p>
+                    </div>
                     <form id="loginForm" onsubmit="return handleLogin(event)">
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" id="loginEmail" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" class="form-control" id="loginEmail" placeholder="admin@seminarpro.com" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-control" id="loginPassword" required>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('loginPassword')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="rememberMe">
-                            <label class="form-check-label" for="rememberMe">Ingat saya</label>
-                        </div>
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Login</button>
-                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login
+                            </button>
                         </div>
                     </form>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                        </small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -863,10 +1549,9 @@
                                     <option value="technology">Teknologi</option>
                                     <option value="business">Bisnis</option>
                                     <option value="marketing">Marketing</option>
-                                    <option value="finance">Keuangan</option>
-                                    <option value="leadership">Leadership</option>
-                                    <option value="health">Kesehatan</option>
                                     <option value="education">Pendidikan</option>
+                                    <option value="health">Kesehatan</option>
+                                    <option value="finance">Keuangan</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -878,16 +1563,12 @@
                                 <input type="time" class="form-control" id="seminarTime" required>
                             </div>
                             <div class="col-md-6">
+                                <label class="form-label">Durasi (jam) *</label>
+                                <input type="number" class="form-control" id="seminarDuration" min="1" max="24" value="3" required>
+                            </div>
+                            <div class="col-md-6">
                                 <label class="form-label">Lokasi *</label>
-                                <select class="form-select" id="seminarLocation" required>
-                                    <option value="">Pilih Lokasi</option>
-                                    <option value="Jakarta">Jakarta</option>
-                                    <option value="Bandung">Bandung</option>
-                                    <option value="Surabaya">Surabaya</option>
-                                    <option value="Bali">Bali</option>
-                                    <option value="Online">Online</option>
-                                    <option value="Hybrid">Hybrid</option>
-                                </select>
+                                <input type="text" class="form-control" id="seminarLocation" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Kuota Peserta *</label>
@@ -901,20 +1582,83 @@
                                 <label class="form-label">Harga Early Bird (Rp)</label>
                                 <input type="number" class="form-control" id="seminarEarlyBird" min="0">
                             </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Batas Early Bird</label>
+                                <input type="date" class="form-control" id="seminarEarlyBirdDate">
+                            </div>
                             <div class="col-12">
                                 <label class="form-label">Deskripsi *</label>
                                 <textarea class="form-control" id="seminarDescription" rows="3" required></textarea>
                             </div>
                             <div class="col-12">
+                                <label class="form-label">Gambar Seminar (URL)</label>
+                                <input type="url" class="form-control" id="seminarImage" placeholder="https://example.com/image.jpg">
+                                <small class="text-muted">Biarkan kosong untuk menggunakan gambar default</small>
+                            </div>
+                            <div class="col-12">
                                 <label class="form-label">Pembicara</label>
-                                <select class="form-select" id="seminarSpeakers" multiple>
+                                <select class="form-select select2-multiple" id="seminarSpeakers" multiple>
                                     <!-- Speakers will be populated -->
                                 </select>
                             </div>
                         </div>
-                        <div class="mt-4">
-                            <button type="submit" class="btn btn-primary">Simpan Seminar</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <div class="mt-4 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-fill">Simpan Seminar</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Speaker Modal -->
+    <div class="modal fade" id="addSpeakerModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Pembicara</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="speakerForm" onsubmit="return saveSpeaker(event)">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Lengkap *</label>
+                                <input type="text" class="form-control" id="speakerName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Spesialisasi *</label>
+                                <input type="text" class="form-control" id="speakerSpecialty" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="speakerEmail" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Telepon</label>
+                                <input type="tel" class="form-control" id="speakerPhone">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Perusahaan/Institusi</label>
+                                <input type="text" class="form-control" id="speakerCompany">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Jabatan</label>
+                                <input type="text" class="form-control" id="speakerPosition">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Biografi</label>
+                                <textarea class="form-control" id="speakerBio" rows="3"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">LinkedIn Profile</label>
+                                <input type="url" class="form-control" id="speakerLinkedIn" placeholder="https://linkedin.com/in/username">
+                            </div>
+                        </div>
+                        <div class="mt-4 d-flex gap-2">
+                            <button type="submit" class="btn btn-primary flex-fill">Simpan Pembicara</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
                         </div>
                     </form>
                 </div>
@@ -932,12 +1676,17 @@
                 </div>
                 <div class="modal-body">
                     <div id="registrationForm">
-                        <div class="alert alert-primary">
-                            <h5 id="selectedSeminarTitle" class="mb-1"></h5>
-                            <p class="mb-0 text-muted" id="selectedSeminarInfo"></p>
+                        <div class="card bg-light mb-4">
+                            <div class="card-body">
+                                <h5 id="selectedSeminarTitle" class="mb-2"></h5>
+                                <p class="text-muted mb-0" id="selectedSeminarInfo"></p>
+                                <div class="mt-2">
+                                    <span class="badge bg-primary" id="selectedSeminarCategory"></span>
+                                    <span class="badge bg-success" id="selectedSeminarSeats"></span>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div class="row g-3 mt-3">
+                        <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Nama Lengkap *</label>
                                 <input type="text" class="form-control" id="regName" required>
@@ -960,7 +1709,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Jumlah Tiket *</label>
-                                <select class="form-select" id="regTicketCount" required onchange="updatePaymentSummary()">
+                                <select class="form-select" id="regTicketCount" required onchange="updateRegistrationPricing()">
                                     <option value="1">1 Tiket</option>
                                     <option value="2">2 Tiket</option>
                                     <option value="3">3 Tiket</option>
@@ -968,13 +1717,10 @@
                                     <option value="5">5 Tiket</option>
                                 </select>
                             </div>
-                            
                             <div class="col-12">
                                 <div class="card border-primary">
-                                    <div class="card-header bg-light">
-                                        <h6 class="mb-0">Ringkasan Pembayaran</h6>
-                                    </div>
                                     <div class="card-body">
+                                        <h6 class="card-title mb-3"><i class="fas fa-receipt me-2"></i>Ringkasan Pembayaran</h6>
                                         <div class="d-flex justify-content-between mb-2">
                                             <span>Harga Tiket</span>
                                             <span id="ticketPrice">Rp 0</span>
@@ -984,8 +1730,8 @@
                                             <span id="ticketCount">1</span>
                                         </div>
                                         <div class="d-flex justify-content-between mb-2">
-                                            <span>Diskon Early Bird</span>
-                                            <span id="earlyBirdDiscount">- Rp 0</span>
+                                            <span>Subtotal</span>
+                                            <span id="subtotalAmount">Rp 0</span>
                                         </div>
                                         <div class="d-flex justify-content-between mb-2">
                                             <span>Pajak (10%)</span>
@@ -999,56 +1745,84 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="col-12">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="termsCheck" required>
-                                    <label class="form-check-label" for="termsCheck">
-                                        Saya menyetujui <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">syarat dan ketentuan</a> yang berlaku
-                                    </label>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary" onclick="submitRegistration()" id="submitRegistrationBtn">
-                        <i class="fas fa-paper-plane me-2"></i>Daftar Sekarang
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="submitRegistration()">
+                        <i class="fas fa-paper-plane me-2"></i>Daftar & Bayar
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Info Modals -->
-    <div class="modal fade" id="aboutModal" tabindex="-1">
-        <div class="modal-dialog">
+    <!-- Certificate Modal -->
+    <div class="modal fade" id="certificateModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tentang SeminarPro</h5>
+                    <h5 class="modal-title">Sertifikat Seminar</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>SeminarPro adalah platform terdepan untuk manajemen dan pendaftaran seminar di Indonesia. Kami menghubungkan penyelenggara seminar dengan peserta melalui sistem yang efisien dan profesional.</p>
-                    <p>Didirikan pada tahun 2020, kami telah membantu ribuan seminar dengan total peserta lebih dari 50,000 orang.</p>
+                    <div id="certificatePreview" class="text-center">
+                        <!-- Certificate will be generated here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-primary" onclick="printCertificate()">
+                        <i class="fas fa-print me-2"></i>Print Sertifikat
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="downloadCertificate()">
+                        <i class="fas fa-download me-2"></i>Download PDF
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="contactModal" tabindex="-1">
+    <!-- Import Data Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Kontak Kami</h5>
+                    <h5 class="modal-title">Import Data</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p><strong>Alamat:</strong><br>Gedung SeminarPro, Jl. Sudirman No. 123, Jakarta 10220</p>
-                    <p><strong>Telepon:</strong><br>+62 812-3456-7890</p>
-                    <p><strong>Email:</strong><br>info@seminarpro.com</p>
-                    <p><strong>Jam Operasional:</strong><br>Senin - Jumat: 9:00 - 17:00 WIB</p>
+                    <div class="mb-3">
+                        <label class="form-label">Pilih File JSON</label>
+                        <input type="file" class="form-control" id="importFile" accept=".json">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tipe Data</label>
+                        <select class="form-select" id="importType">
+                            <option value="all">Semua Data</option>
+                            <option value="seminars">Seminar</option>
+                            <option value="registrations">Pendaftaran</option>
+                            <option value="participants">Peserta</option>
+                            <option value="speakers">Pembicara</option>
+                        </select>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="importOverwrite">
+                        <label class="form-check-label" for="importOverwrite">
+                            Timpa data yang sudah ada
+                        </label>
+                    </div>
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Pastikan file JSON sesuai format sistem ini.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="processImport()">
+                        <i class="fas fa-upload me-2"></i>Import Data
+                    </button>
                 </div>
             </div>
         </div>
@@ -1059,187 +1833,557 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <script>
-        // ==================== STATE MANAGEMENT ====================
+        // ==================== GLOBAL VARIABLES ====================
         let currentUser = null;
         let isAdmin = false;
         let selectedSeminarId = null;
-        let currentPage = 1;
-        const seminarsPerPage = 6;
-        let currentSeminars = [];
+        let currentView = 'user';
+        let charts = {};
+        let dataTables = {};
 
-        // In-memory database
+        // Enhanced database structure
         let seminars = JSON.parse(localStorage.getItem('seminars')) || [];
         let registrations = JSON.parse(localStorage.getItem('registrations')) || [];
         let participants = JSON.parse(localStorage.getItem('participants')) || [];
         let speakers = JSON.parse(localStorage.getItem('speakers')) || [];
+        let certificates = JSON.parse(localStorage.getItem('certificates')) || [];
+        let waitingList = JSON.parse(localStorage.getItem('waitingList')) || [];
+        let settings = JSON.parse(localStorage.getItem('settings')) || {};
+        let systemLogs = JSON.parse(localStorage.getItem('systemLogs')) || [];
 
-        // Initialize with 20+ seminars
-        function initializeData() {
+        // ==================== UTILITY FUNCTIONS ====================
+        function logAction(action, details = {}) {
+            const log = {
+                id: systemLogs.length + 1,
+                action,
+                details,
+                user: currentUser || 'System',
+                timestamp: new Date().toISOString(),
+                ip: '127.0.0.1' // Simulated IP
+            };
+            systemLogs.push(log);
+            saveToStorage('systemLogs', systemLogs);
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(amount);
+        }
+
+        function formatDate(dateString, includeTime = false) {
+            const date = new Date(dateString);
+            const options = {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            };
+            if (includeTime) {
+                options.hour = '2-digit';
+                options.minute = '2-digit';
+            }
+            return date.toLocaleDateString('id-ID', options);
+        }
+
+        function generateId(prefix = '') {
+            const timestamp = Date.now();
+            const random = Math.floor(Math.random() * 1000);
+            return `${prefix}${timestamp}${random}`;
+        }
+
+        function getCategoryLabel(category) {
+            const categories = {
+                'technology': 'Teknologi',
+                'business': 'Bisnis',
+                'marketing': 'Marketing',
+                'education': 'Pendidikan',
+                'health': 'Kesehatan',
+                'finance': 'Keuangan'
+            };
+            return categories[category] || category;
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                'technology': 'primary',
+                'business': 'success',
+                'marketing': 'warning',
+                'education': 'info',
+                'health': 'danger',
+                'finance': 'secondary'
+            };
+            return colors[category] || 'secondary';
+        }
+
+        // ==================== STORAGE MANAGEMENT ====================
+        function saveToStorage(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                return true;
+            } catch (error) {
+                console.error('Error saving to storage:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Storage Error',
+                    text: 'Gagal menyimpan data ke localStorage',
+                });
+                return false;
+            }
+        }
+
+        function backupDatabase() {
+            const backup = {
+                seminars,
+                registrations,
+                participants,
+                speakers,
+                certificates,
+                waitingList,
+                settings,
+                systemLogs,
+                backupDate: new Date().toISOString(),
+                version: '2.0.0'
+            };
+
+            const dataStr = JSON.stringify(backup, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `seminarpro-backup-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+
+            logAction('BACKUP_DATABASE', { items: Object.keys(backup).length });
+            Swal.fire('Success', 'Database backup berhasil diexport!', 'success');
+        }
+
+        function restoreDatabase() {
+            const modal = new bootstrap.Modal(document.getElementById('importModal'));
+            modal.show();
+        }
+
+        function processImport() {
+            const fileInput = document.getElementById('importFile');
+            const importType = document.getElementById('importType').value;
+            const overwrite = document.getElementById('importOverwrite').checked;
+
+            if (!fileInput.files.length) {
+                Swal.fire('Error', 'Pilih file terlebih dahulu!', 'error');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (importType === 'all') {
+                        if (overwrite) {
+                            seminars = data.seminars || seminars;
+                            registrations = data.registrations || registrations;
+                            participants = data.participants || participants;
+                            speakers = data.speakers || speakers;
+                            certificates = data.certificates || certificates;
+                            waitingList = data.waitingList || waitingList;
+                            settings = data.settings || settings;
+                            systemLogs = data.systemLogs || systemLogs;
+                        } else {
+                            // Merge data
+                            seminars = [...seminars, ...(data.seminars || [])];
+                            registrations = [...registrations, ...(data.registrations || [])];
+                            participants = [...participants, ...(data.participants || [])];
+                            speakers = [...speakers, ...(data.speakers || [])];
+                            certificates = [...certificates, ...(data.certificates || [])];
+                            waitingList = [...waitingList, ...(data.waitingList || [])];
+                            settings = { ...settings, ...(data.settings || {}) };
+                            systemLogs = [...systemLogs, ...(data.systemLogs || [])];
+                        }
+                    } else {
+                        if (overwrite) {
+                            window[importType] = data[importType] || window[importType];
+                        } else {
+                            window[importType] = [...window[importType], ...(data[importType] || [])];
+                        }
+                    }
+
+                    // Save all data
+                    saveAllData();
+                    
+                    // Update UI
+                    updateStats();
+                    refreshViews();
+                    
+                    Swal.fire('Success', 'Data berhasil diimport!', 'success');
+                    logAction('IMPORT_DATA', { type: importType, items: Object.keys(data).length });
+                    
+                    bootstrap.Modal.getInstance(document.getElementById('importModal')).hide();
+                } catch (error) {
+                    Swal.fire('Error', 'Format file tidak valid!', 'error');
+                }
+            };
+
+            reader.readAsText(file);
+        }
+
+        function clearDatabase() {
+            Swal.fire({
+                title: 'Reset Database?',
+                text: "Semua data akan dihapus permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Reset!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.clear();
+                    initializeDefaultData();
+                    Swal.fire('Reset Berhasil!', 'Database telah direset ke pengaturan default.', 'success');
+                }
+            });
+        }
+
+        function saveAllData() {
+            saveToStorage('seminars', seminars);
+            saveToStorage('registrations', registrations);
+            saveToStorage('participants', participants);
+            saveToStorage('speakers', speakers);
+            saveToStorage('certificates', certificates);
+            saveToStorage('waitingList', waitingList);
+            saveToStorage('settings', settings);
+            saveToStorage('systemLogs', systemLogs);
+        }
+
+        // ==================== INITIALIZATION ====================
+        function initializeDefaultData() {
+            // Default settings
+            if (Object.keys(settings).length === 0) {
+                settings = {
+                    systemName: 'SeminarPro',
+                    adminEmail: 'admin@seminarpro.com',
+                    systemPhone: '(021) 1234-5678',
+                    systemAddress: 'Jl. Seminar No. 123, Jakarta',
+                    taxRate: 10,
+                    earlyBirdDiscount: 20,
+                    bankAccount: 'BCA 123-456-7890 a.n. SeminarPro',
+                    paymentDeadline: 24
+                };
+                saveToStorage('settings', settings);
+            }
+
+            // Default seminars
             if (seminars.length === 0) {
-                const seminarImages = [
-                    'https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
-                    'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
-                    'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
-                    'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
-                    'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
-                    'https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'
-                ];
-
                 seminars = [
                     {
-                        id: 1, code: 'SEM001', title: 'AI Conference 2024', category: 'technology',
-                        date: '2024-02-15', time: '09:00', location: 'Jakarta', quota: 100, registered: 75,
-                        price: 500000, earlyBirdPrice: 400000, description: 'Exploring the Future of AI',
-                        speakers: ['Dr. Andi Wijaya, Ph.D'], status: 'active', image: seminarImages[0]
+                        id: 1,
+                        code: 'SEM2024001',
+                        title: 'AI Conference 2024',
+                        description: 'Exploring the Future of Artificial Intelligence in Business and Society',
+                        date: '2024-03-15',
+                        time: '09:00',
+                        duration: 8,
+                        location: 'Hotel Grand Indonesia, Jakarta',
+                        category: 'technology',
+                        quota: 100,
+                        registered: 75,
+                        price: 500000,
+                        earlyBirdPrice: 400000,
+                        earlyBirdDate: '2024-02-28',
+                        speakers: ['S001'],
+                        status: 'active',
+                        image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                        featured: true
                     },
                     {
-                        id: 2, code: 'SEM002', title: 'Digital Marketing Masterclass', category: 'marketing',
-                        date: '2024-02-20', time: '09:00', location: 'Online', quota: 150, registered: 120,
-                        price: 750000, earlyBirdPrice: 600000, description: 'Advanced Digital Marketing Strategies',
-                        speakers: ['Sari Dewi, MBA'], status: 'active', image: seminarImages[1]
-                    },
-                    {
-                        id: 3, code: 'SEM003', title: 'Data Science Bootcamp', category: 'technology',
-                        date: '2024-02-25', time: '10:00', location: 'Bandung', quota: 50, registered: 35,
-                        price: 1200000, earlyBirdPrice: 950000, description: 'Intensive Data Science Training',
-                        speakers: ['Prof. Budi Santoso'], status: 'active', image: seminarImages[2]
-                    },
-                    {
-                        id: 4, code: 'SEM004', title: 'Financial Planning Workshop', category: 'finance',
-                        date: '2024-03-01', time: '13:00', location: 'Jakarta', quota: 80, registered: 60,
-                        price: 350000, earlyBirdPrice: 280000, description: 'Smart Financial Planning',
-                        speakers: ['Bambang Hartono, CFA'], status: 'active', image: seminarImages[3]
-                    },
-                    {
-                        id: 5, code: 'SEM005', title: 'Leadership Summit 2024', category: 'leadership',
-                        date: '2024-03-05', time: '08:30', location: 'Surabaya', quota: 200, registered: 180,
-                        price: 850000, earlyBirdPrice: 680000, description: 'Leadership Excellence',
-                        speakers: ['Dian Pertiwi, Ph.D'], status: 'active', image: seminarImages[4]
-                    },
-                    {
-                        id: 6, code: 'SEM006', title: 'Health & Wellness Expo', category: 'health',
-                        date: '2024-03-10', time: '10:00', location: 'Hybrid', quota: 120, registered: 90,
-                        price: 300000, earlyBirdPrice: 240000, description: 'Holistic Health Approach',
-                        speakers: ['Dr. Siti Rahayu'], status: 'active', image: seminarImages[5]
-                    },
-                    {
-                        id: 7, code: 'SEM007', title: 'Blockchain Revolution', category: 'technology',
-                        date: '2024-03-15', time: '14:00', location: 'Online', quota: 100, registered: 65,
-                        price: 600000, earlyBirdPrice: 480000, description: 'Understanding Blockchain',
-                        speakers: ['Rudi Hermawan'], status: 'active', image: seminarImages[0]
-                    },
-                    {
-                        id: 8, code: 'SEM008', title: 'Startup Funding Workshop', category: 'business',
-                        date: '2024-03-20', time: '09:00', location: 'Jakarta', quota: 60, registered: 40,
-                        price: 450000, earlyBirdPrice: 360000, description: 'Get Your Startup Funded',
-                        speakers: ['Michael Chen'], status: 'active', image: seminarImages[1]
-                    },
-                    {
-                        id: 9, code: 'SEM009', title: 'Content Marketing Strategy', category: 'marketing',
-                        date: '2024-03-25', time: '13:00', location: 'Online', quota: 150, registered: 110,
-                        price: 400000, earlyBirdPrice: 320000, description: 'Content That Converts',
-                        speakers: ['Lisa Wong'], status: 'active', image: seminarImages[2]
-                    },
-                    {
-                        id: 10, code: 'SEM010', title: 'Cybersecurity Essentials', category: 'technology',
-                        date: '2024-04-01', time: '10:00', location: 'Jakarta', quota: 80, registered: 55,
-                        price: 550000, earlyBirdPrice: 440000, description: 'Protect Your Digital Assets',
-                        speakers: ['Ahmad Fauzi'], status: 'active', image: seminarImages[3]
-                    },
-                    {
-                        id: 11, code: 'SEM011', title: 'E-commerce Mastery', category: 'business',
-                        date: '2024-04-05', time: '09:00', location: 'Bandung', quota: 100, registered: 70,
-                        price: 350000, earlyBirdPrice: 280000, description: 'Build Successful E-commerce',
-                        speakers: ['Dewi Anggraini'], status: 'active', image: seminarImages[4]
-                    },
-                    {
-                        id: 12, code: 'SEM012', title: 'Public Speaking Workshop', category: 'leadership',
-                        date: '2024-04-10', time: '13:00', location: 'Surabaya', quota: 60, registered: 45,
-                        price: 250000, earlyBirdPrice: 200000, description: 'Speak With Confidence',
-                        speakers: ['Robert Johnson'], status: 'active', image: seminarImages[5]
-                    },
-                    {
-                        id: 13, code: 'SEM013', title: 'Machine Learning Bootcamp', category: 'technology',
-                        date: '2024-04-15', time: '09:00', location: 'Online', quota: 120, registered: 95,
-                        price: 800000, earlyBirdPrice: 640000, description: 'Practical ML Applications',
-                        speakers: ['Dr. Sarah Lee'], status: 'active', image: seminarImages[0]
-                    },
-                    {
-                        id: 14, code: 'SEM014', title: 'Social Media Marketing', category: 'marketing',
-                        date: '2024-04-20', time: '14:00', location: 'Jakarta', quota: 90, registered: 65,
-                        price: 300000, earlyBirdPrice: 240000, description: 'Master Social Media',
-                        speakers: ['Andi Santoso'], status: 'active', image: seminarImages[1]
-                    },
-                    {
-                        id: 15, code: 'SEM015', title: 'Investment Strategy 2024', category: 'finance',
-                        date: '2024-04-25', time: '10:00', location: 'Online', quota: 150, registered: 120,
-                        price: 400000, earlyBirdPrice: 320000, description: 'Smart Investment Decisions',
-                        speakers: ['David Wilson'], status: 'active', image: seminarImages[2]
+                        id: 2,
+                        code: 'SEM2024002',
+                        title: 'Digital Marketing Masterclass',
+                        description: 'Advanced Strategies for Digital Marketing Success in 2024',
+                        date: '2024-03-20',
+                        time: '09:00',
+                        duration: 6,
+                        location: 'Online (Zoom Pro)',
+                        category: 'marketing',
+                        quota: 100,
+                        registered: 90,
+                        price: 750000,
+                        earlyBirdPrice: 600000,
+                        earlyBirdDate: '2024-03-10',
+                        speakers: ['S002'],
+                        status: 'active',
+                        image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                        featured: true
                     }
                 ];
                 saveToStorage('seminars', seminars);
             }
 
+            // Default speakers
             if (speakers.length === 0) {
                 speakers = [
-                    { id: 1, name: 'Dr. Andi Wijaya, Ph.D', specialty: 'Artificial Intelligence', email: 'andi@email.com' },
-                    { id: 2, name: 'Sari Dewi, MBA', specialty: 'Digital Marketing', email: 'sari@email.com' },
-                    { id: 3, name: 'Prof. Budi Santoso', specialty: 'Data Science', email: 'budi@email.com' },
-                    { id: 4, name: 'Bambang Hartono, CFA', specialty: 'Finance', email: 'bambang@email.com' },
-                    { id: 5, name: 'Dian Pertiwi, Ph.D', specialty: 'Leadership', email: 'dian@email.com' },
-                    { id: 6, name: 'Dr. Siti Rahayu', specialty: 'Health & Wellness', email: 'siti@email.com' },
-                    { id: 7, name: 'Rudi Hermawan', specialty: 'Blockchain', email: 'rudi@email.com' },
-                    { id: 8, name: 'Michael Chen', specialty: 'Startup', email: 'michael@email.com' },
-                    { id: 9, name: 'Lisa Wong', specialty: 'Content Marketing', email: 'lisa@email.com' },
-                    { id: 10, name: 'Ahmad Fauzi', specialty: 'Cybersecurity', email: 'ahmad@email.com' }
+                    {
+                        id: 'S001',
+                        name: 'Dr. Andi Wijaya, Ph.D',
+                        specialty: 'Artificial Intelligence',
+                        email: 'andi@email.com',
+                        phone: '081234567890',
+                        company: 'Tech University',
+                        position: 'AI Research Lead',
+                        bio: 'AI Researcher with 10+ years experience',
+                        linkedIn: 'https://linkedin.com/in/andi-wijaya'
+                    },
+                    {
+                        id: 'S002',
+                        name: 'Sari Dewi, MBA',
+                        specialty: 'Digital Marketing',
+                        email: 'sari@email.com',
+                        phone: '082345678901',
+                        company: 'Digital Solutions Inc.',
+                        position: 'Chief Marketing Officer',
+                        bio: 'Marketing Expert and Consultant with 15+ years experience',
+                        linkedIn: 'https://linkedin.com/in/sari-dewi'
+                    }
                 ];
                 saveToStorage('speakers', speakers);
             }
 
+            // Default registrations
             if (registrations.length === 0) {
                 registrations = [
                     {
-                        id: 1, code: 'REG001', seminarId: 1, seminarTitle: 'AI Conference 2024',
-                        participantName: 'Budi Santoso', participantEmail: 'budi@email.com',
-                        participantPhone: '081234567890', institution: 'PT. Maju Jaya',
-                        position: 'Manager', ticketCount: 1, amount: 442500,
-                        status: 'confirmed', paymentStatus: 'paid', registrationDate: '2024-01-10'
-                    },
-                    {
-                        id: 2, code: 'REG002', seminarId: 2, seminarTitle: 'Digital Marketing Masterclass',
-                        participantName: 'Sari Dewi', participantEmail: 'sari@email.com',
-                        participantPhone: '082345678901', institution: 'Digital Agency',
-                        position: 'Director', ticketCount: 2, amount: 1255000,
-                        status: 'pending', paymentStatus: 'unpaid', registrationDate: '2024-01-11'
+                        id: 'REG20240001',
+                        seminarId: 1,
+                        seminarTitle: 'AI Conference 2024',
+                        participantId: 'P001',
+                        participantName: 'Budi Santoso',
+                        participantEmail: 'budi@email.com',
+                        participantPhone: '081234567890',
+                        institution: 'PT. Maju Jaya',
+                        position: 'Manager',
+                        ticketCount: 1,
+                        amount: 550000,
+                        tax: 50000,
+                        status: 'confirmed',
+                        paymentStatus: 'paid',
+                        registrationDate: '2024-02-10',
+                        paymentDate: '2024-02-10'
                     }
                 ];
                 saveToStorage('registrations', registrations);
             }
 
+            // Default participants
             if (participants.length === 0) {
                 participants = [
                     {
-                        id: 1, name: 'Budi Santoso', email: 'budi@email.com',
-                        phone: '081234567890', institution: 'PT. Maju Jaya',
-                        position: 'Manager', seminarCount: 1
-                    },
-                    {
-                        id: 2, name: 'Sari Dewi', email: 'sari@email.com',
-                        phone: '082345678901', institution: 'Digital Agency',
-                        position: 'Director', seminarCount: 1
+                        id: 'P001',
+                        name: 'Budi Santoso',
+                        email: 'budi@email.com',
+                        phone: '081234567890',
+                        institution: 'PT. Maju Jaya',
+                        position: 'Manager',
+                        seminarCount: 1,
+                        totalSpent: 550000,
+                        joinDate: '2024-02-10'
                     }
                 ];
                 saveToStorage('participants', participants);
             }
+
+            // Default certificates
+            if (certificates.length === 0) {
+                certificates = [
+                    {
+                        id: 'CERT20240001',
+                        registrationId: 'REG20240001',
+                        participantName: 'Budi Santoso',
+                        seminarTitle: 'AI Conference 2024',
+                        issueDate: '2024-02-15',
+                        certificateNumber: 'CERT/2024/001',
+                        status: 'issued'
+                    }
+                ];
+                saveToStorage('certificates', certificates);
+            }
+
+            // Update UI
+            updateStats();
+            refreshViews();
         }
 
-        // ==================== CORE FUNCTIONS ====================
-        function saveToStorage(key, data) {
-            localStorage.setItem(key, JSON.stringify(data));
+        // ==================== VIEW MANAGEMENT ====================
+        function switchToAdmin() {
+            if (isAdmin) {
+                showSection('dashboard');
+                return;
+            }
+            
+            const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+            loginModal.show();
         }
 
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Simple admin authentication
+            const adminCredentials = {
+                email: 'admin@seminarpro.com',
+                password: 'admin123'
+            };
+
+            if (email === adminCredentials.email && password === adminCredentials.password) {
+                isAdmin = true;
+                currentUser = email;
+                document.getElementById('currentUser').textContent = 'Admin';
+                
+                // Switch to admin view
+                document.getElementById('userView').classList.add('d-none');
+                document.getElementById('adminView').classList.remove('d-none');
+                document.getElementById('adminSidebar').classList.remove('d-none');
+                
+                // Initialize admin view
+                showSection('dashboard');
+                initializeCalendar();
+                loadCharts();
+                
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Berhasil',
+                    text: 'Selamat datang di dashboard admin!',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                
+                const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                loginModal.hide();
+                
+                document.getElementById('loginForm').reset();
+                logAction('LOGIN_SUCCESS', { email });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Login Gagal',
+                    text: 'Email atau password salah!',
+                    timer: 3000
+                });
+                logAction('LOGIN_FAILED', { email });
+            }
+            return false;
+        }
+
+        function logout() {
+            Swal.fire({
+                title: 'Logout?',
+                text: 'Anda yakin ingin logout?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Logout'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    isAdmin = false;
+                    currentUser = null;
+                    document.getElementById('currentUser').textContent = 'Admin Sistem';
+                    
+                    // Switch to user view
+                    document.getElementById('userView').classList.remove('d-none');
+                    document.getElementById('adminView').classList.add('d-none');
+                    document.getElementById('adminSidebar').classList.add('d-none');
+                    
+                    // Refresh user view
+                    loadSeminars();
+                    updateStats();
+                    
+                    Swal.fire(
+                        'Logout Berhasil!',
+                        'Anda telah logout dari sistem.',
+                        'success'
+                    );
+                    logAction('LOGOUT');
+                }
+            });
+        }
+
+        function showSection(sectionId) {
+            // Update active menu
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const activeItem = document.querySelector(`[onclick="showSection('${sectionId}')"]`);
+            if (activeItem) activeItem.classList.add('active');
+
+            // Hide all sections
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.add('d-none');
+            });
+
+            // Show selected section
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.remove('d-none');
+                
+                // Load data for section
+                switch(sectionId) {
+                    case 'dashboard':
+                        loadRecentRegistrations();
+                        break;
+                    case 'calendar':
+                        initializeCalendar();
+                        break;
+                    case 'seminars':
+                        loadSeminarsTable();
+                        break;
+                    case 'registrations':
+                        loadRegistrationsTable();
+                        break;
+                    case 'participants':
+                        loadParticipantsTable();
+                        break;
+                    case 'speakers':
+                        loadSpeakersTable();
+                        break;
+                    case 'certificates':
+                        loadCertificatesTable();
+                        break;
+                    case 'waitingList':
+                        loadWaitingListTable();
+                        break;
+                    case 'reports':
+                        generateReport();
+                        break;
+                    case 'settings':
+                        loadSettings();
+                        updateSystemInfo();
+                        break;
+                }
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('adminSidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // ==================== STATS & UPDATES ====================
         function updateStats() {
             const activeSeminars = seminars.filter(s => s.status === 'active').length;
             const totalParticipants = registrations.reduce((sum, reg) => sum + reg.ticketCount, 0);
@@ -1248,167 +2392,409 @@
                 .reduce((sum, reg) => sum + reg.amount, 0);
             const pendingRegistrations = registrations.filter(reg => reg.status === 'pending').length;
             const totalSpeakers = speakers.length;
+            const totalCertificates = certificates.length;
+            const waitingListCount = waitingList.length;
 
+            // Update user view stats
             document.getElementById('statSeminars').textContent = activeSeminars;
             document.getElementById('statParticipants').textContent = totalParticipants;
             document.getElementById('statSpeakers').textContent = totalSpeakers;
-            document.getElementById('statSatisfaction').textContent = '98%';
+            document.getElementById('statRevenue').textContent = formatCurrency(totalRevenue);
 
-            document.getElementById('adminStatParticipants').textContent = totalParticipants;
-            document.getElementById('adminStatRevenue').textContent = `Rp ${totalRevenue.toLocaleString()}`;
+            // Update admin view stats
             document.getElementById('adminStatSeminars').textContent = activeSeminars;
+            document.getElementById('adminStatParticipants').textContent = totalParticipants;
+            document.getElementById('adminStatRevenue').textContent = formatCurrency(totalRevenue);
             document.getElementById('adminStatPending').textContent = pendingRegistrations;
+
+            // Update badges
+            document.getElementById('seminarBadge').textContent = activeSeminars;
+            document.getElementById('registrationBadge').textContent = pendingRegistrations;
+            document.getElementById('participantBadge').textContent = participants.length;
+            document.getElementById('speakerBadge').textContent = totalSpeakers;
+            document.getElementById('certificateBadge').textContent = totalCertificates;
+            document.getElementById('waitingListBadge').textContent = waitingListCount;
         }
 
-        // ==================== SEMINAR DISPLAY ====================
-        function loadSeminars(page = 1) {
-            currentPage = page;
-            currentSeminars = seminars.filter(s => s.status === 'active');
-            applyFilters();
-            
+        function updateSystemInfo() {
+            const totalSize = JSON.stringify(localStorage).length;
+            document.getElementById('seminarCountInfo').textContent = seminars.length;
+            document.getElementById('participantCountInfo').textContent = participants.length;
+            document.getElementById('dbSizeInfo').textContent = `${(totalSize / 1024).toFixed(2)} KB`;
+        }
+
+        // ==================== SEMINAR FUNCTIONS ====================
+        function loadSeminars(filter = 'all') {
             const container = document.getElementById('seminarList');
+            const featuredContainer = document.getElementById('featuredSeminarList');
+            const noSeminarsMsg = document.getElementById('noSeminarsMessage');
+            
             container.innerHTML = '';
+            featuredContainer.innerHTML = '';
 
-            const startIndex = (page - 1) * seminarsPerPage;
-            const endIndex = startIndex + seminarsPerPage;
-            const seminarsToShow = currentSeminars.slice(startIndex, endIndex);
+            let filteredSeminars = seminars.filter(s => s.status === 'active');
+            
+            if (filter !== 'all') {
+                filteredSeminars = filteredSeminars.filter(s => s.category === filter);
+            }
 
-            if (seminarsToShow.length === 0) {
-                container.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
-                        <h4 class="text-muted">Tidak ada seminar yang sesuai dengan filter</h4>
-                    </div>
-                `;
-                generatePagination();
+            if (filteredSeminars.length === 0) {
+                noSeminarsMsg.style.display = 'block';
                 return;
             }
 
-            seminarsToShow.forEach(seminar => {
-                const percentage = Math.round((seminar.registered / seminar.quota) * 100);
-                const isEarlyBird = new Date() < new Date(seminar.date);
-                const currentPrice = isEarlyBird && seminar.earlyBirdPrice ? seminar.earlyBirdPrice : seminar.price;
-                const discount = isEarlyBird && seminar.earlyBirdPrice ? seminar.price - seminar.earlyBirdPrice : 0;
+            noSeminarsMsg.style.display = 'none';
 
-                const card = `
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="card seminar-card">
-                            <div class="seminar-image">
-                                <img src="${seminar.image}" alt="${seminar.title}">
-                                <span class="seminar-badge">${getCategoryName(seminar.category)}</span>
+            // Load featured seminars
+            const featuredSeminars = filteredSeminars.filter(s => s.featured).slice(0, 3);
+            featuredSeminars.forEach(seminar => {
+                featuredContainer.innerHTML += createSeminarCard(seminar, true);
+            });
+
+            // Load all seminars
+            filteredSeminars.forEach(seminar => {
+                container.innerHTML += createSeminarCard(seminar, false);
+            });
+
+            // Initialize AOS animations
+            AOS.init({
+                duration: 1000,
+                once: true
+            });
+        }
+
+        function createSeminarCard(seminar, isFeatured = false) {
+            const percentage = Math.round((seminar.registered / seminar.quota) * 100);
+            const categoryLabel = getCategoryLabel(seminar.category);
+            const categoryColor = getCategoryColor(seminar.category);
+            const isEarlyBird = seminar.earlyBirdPrice && new Date(seminar.earlyBirdDate) > new Date();
+            
+            return `
+                <div class="col-lg-${isFeatured ? '4' : '4'} col-md-6 mb-4" data-aos="fade-up">
+                    <div class="card seminar-card h-100">
+                        <div class="position-relative">
+                            <img src="${seminar.image}" class="card-img-top" alt="${seminar.title}" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'">
+                            <span class="seminar-badge bg-${categoryColor}">${categoryLabel}</span>
+                            ${isEarlyBird ? `
+                                <span class="position-absolute top-0 start-0 m-3 badge bg-warning">
+                                    <i class="fas fa-bolt me-1"></i>Early Bird
+                                </span>
+                            ` : ''}
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <small class="text-muted">${seminar.code}</small>
+                                <small class="text-muted">${formatDate(seminar.date)}</small>
                             </div>
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="badge bg-primary">${seminar.code}</span>
-                                    <small class="text-muted">${formatDate(seminar.date)}</small>
+                            <h5 class="card-title">${seminar.title}</h5>
+                            <p class="card-text text-muted flex-grow-1">${seminar.description.substring(0, 100)}...</p>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-clock text-primary me-2"></i>
+                                    <span>${seminar.time} | ${seminar.duration} jam</span>
                                 </div>
-                                <h5 class="card-title">${seminar.title}</h5>
-                                <p class="card-text text-muted mb-3">${seminar.description.substring(0, 100)}...</p>
-                                
-                                <div class="mb-3">
-                                    <div><i class="fas fa-clock me-2 text-primary"></i>${seminar.time} WIB</div>
-                                    <div><i class="fas fa-map-marker-alt me-2 text-primary"></i>${seminar.location}</div>
-                                    <div><i class="fas fa-chalkboard-teacher me-2 text-primary"></i>${seminar.speakers.join(', ')}</div>
+                                <div class="d-flex align-items-center mb-1">
+                                    <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                    <span>${seminar.location}</span>
                                 </div>
-                                
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="h4 text-primary">Rp ${currentPrice.toLocaleString()}</span>
-                                        ${discount > 0 ? `
-                                            <span class="text-success">
-                                                <i class="fas fa-bolt me-1"></i>
-                                                Hemat Rp ${discount.toLocaleString()}
-                                            </span>
-                                        ` : ''}
-                                    </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="h4 text-primary">${formatCurrency(seminar.price)}</span>
+                                    ${seminar.earlyBirdPrice && isEarlyBird ? `
+                                        <span class="text-success">
+                                            <s class="text-muted small">${formatCurrency(seminar.price)}</s><br>
+                                            ${formatCurrency(seminar.earlyBirdPrice)}
+                                        </span>
+                                    ` : ''}
                                 </div>
-                                
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span>Kuota: ${seminar.registered}/${seminar.quota}</span>
-                                        <span>${percentage}% terisi</span>
-                                    </div>
-                                    <div class="progress" style="height: 8px;">
-                                        <div class="progress-bar ${percentage >= 90 ? 'bg-danger' : percentage >= 70 ? 'bg-warning' : 'bg-success'}" 
-                                             style="width: ${percentage}%"></div>
-                                    </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span>Kuota: ${seminar.registered}/${seminar.quota}</span>
+                                    <span>${percentage}% terisi</span>
                                 </div>
-                                
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-${percentage >= 90 ? 'danger' : percentage >= 70 ? 'warning' : 'success'}" 
+                                         style="width: ${percentage}%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-auto">
                                 <div class="d-grid gap-2">
                                     <button class="btn btn-primary" onclick="startRegistration(${seminar.id})" 
                                             ${seminar.registered >= seminar.quota ? 'disabled' : ''}>
                                         <i class="fas fa-calendar-plus me-2"></i>
                                         ${seminar.registered >= seminar.quota ? 'KUOTA PENUH' : 'DAFTAR SEKARANG'}
                                     </button>
+                                    ${seminar.registered >= seminar.quota ? `
+                                        <button class="btn btn-outline-warning" onclick="joinWaitingList(${seminar.id})">
+                                            <i class="fas fa-clock me-2"></i>Join Waiting List
+                                        </button>
+                                    ` : ''}
                                     <button class="btn btn-outline-primary" onclick="showSeminarDetail(${seminar.id})">
-                                        <i class="fas fa-info-circle me-2"></i>Detail Seminar
+                                        <i class="fas fa-info-circle me-2"></i>Detail
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                `;
-                container.innerHTML += card;
-            });
-
-            generatePagination();
+                </div>
+            `;
         }
 
-        function generatePagination() {
-            const totalPages = Math.ceil(currentSeminars.length / seminarsPerPage);
-            const pagination = document.getElementById('pagination');
-            pagination.innerHTML = '';
-
-            if (totalPages <= 1) return;
-
-            // Previous button
-            pagination.innerHTML += `
-                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-                    <a class="page-link" href="#" onclick="loadSeminars(${currentPage - 1})">«</a>
-                </li>
-            `;
-
-            // Page numbers
-            for (let i = 1; i <= totalPages; i++) {
-                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-                    pagination.innerHTML += `
-                        <li class="page-item ${i === currentPage ? 'active' : ''}">
-                            <a class="page-link" href="#" onclick="loadSeminars(${i})">${i}</a>
-                        </li>
-                    `;
-                } else if (i === currentPage - 2 || i === currentPage + 2) {
-                    pagination.innerHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
-                }
+        function loadSeminarsTable() {
+            if (dataTables.seminars) {
+                dataTables.seminars.destroy();
             }
 
-            // Next button
-            pagination.innerHTML += `
-                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-                    <a class="page-link" href="#" onclick="loadSeminars(${currentPage + 1})">»</a>
-                </li>
-            `;
-        }
-
-        function filterSeminars() {
-            const category = document.getElementById('filterCategory').value;
-            const location = document.getElementById('filterLocation').value;
-            const date = document.getElementById('filterDate').value;
-            const search = document.getElementById('searchSeminar').value.toLowerCase();
-
-            currentSeminars = seminars.filter(seminar => {
-                if (seminar.status !== 'active') return false;
-                if (category && seminar.category !== category) return false;
-                if (location && seminar.location !== location) return false;
-                if (date && seminar.date !== date) return false;
-                if (search && !seminar.title.toLowerCase().includes(search) && 
-                    !seminar.description.toLowerCase().includes(search)) return false;
-                return true;
+            const table = $('#seminarsTable').DataTable({
+                data: seminars,
+                columns: [
+                    { data: 'code' },
+                    { 
+                        data: 'title',
+                        render: function(data, type, row) {
+                            return `<strong>${data}</strong><br><small class="text-muted">${row.category}</small>`;
+                        }
+                    },
+                    { 
+                        data: 'date',
+                        render: function(data) {
+                            return formatDate(data);
+                        }
+                    },
+                    { data: 'location' },
+                    { 
+                        data: null,
+                        render: function(data) {
+                            const percentage = Math.round((data.registered / data.quota) * 100);
+                            return `${data.registered}/${data.quota} <span class="badge bg-${percentage >= 90 ? 'danger' : percentage >= 70 ? 'warning' : 'success'}">${percentage}%</span>`;
+                        }
+                    },
+                    { 
+                        data: 'price',
+                        render: function(data) {
+                            return formatCurrency(data);
+                        }
+                    },
+                    { 
+                        data: 'status',
+                        render: function(data) {
+                            const statusClass = data === 'active' ? 'status-active' : 
+                                              data === 'completed' ? 'status-completed' : 'status-cancelled';
+                            return `<span class="status-badge ${statusClass}">${data}</span>`;
+                        }
+                    },
+                    {
+                        data: 'id',
+                        render: function(data, type, row) {
+                            return `
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-primary" onclick="editSeminar(${data})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success" onclick="duplicateSeminar(${data})">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="btn btn-outline-danger" onclick="deleteSeminar(${data})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            `;
+                        }
+                    }
+                ],
+                pageLength: 10,
+                language: {
+                    search: "Cari:",
+                    lengthMenu: "Tampilkan _MENU_ data",
+                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    paginate: {
+                        first: "Pertama",
+                        last: "Terakhir",
+                        next: "Berikut",
+                        previous: "Sebelum"
+                    }
+                }
             });
 
-            loadSeminars(1);
+            dataTables.seminars = table;
         }
 
-        // ==================== REGISTRATION FIXED ====================
+        function showAddSeminarModal() {
+            // Populate speakers dropdown
+            const speakerSelect = document.getElementById('seminarSpeakers');
+            speakerSelect.innerHTML = speakers.map(speaker => 
+                `<option value="${speaker.id}">${speaker.name} - ${speaker.specialty}</option>`
+            ).join('');
+
+            // Initialize Select2
+            $('.select2-multiple').select2({
+                placeholder: "Pilih pembicara",
+                width: '100%'
+            });
+
+            // Set default dates
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('seminarDate').value = tomorrow.toISOString().split('T')[0];
+            document.getElementById('seminarEarlyBirdDate').value = today.toISOString().split('T')[0];
+
+            const modal = new bootstrap.Modal(document.getElementById('addSeminarModal'));
+            modal.show();
+        }
+
+        function saveSeminar(e) {
+            e.preventDefault();
+            
+            const form = e.target;
+            const seminarData = {
+                id: seminars.length > 0 ? Math.max(...seminars.map(s => s.id)) + 1 : 1,
+                code: `SEM${new Date().getFullYear()}${String(seminars.length + 1).padStart(3, '0')}`,
+                title: document.getElementById('seminarTitle').value,
+                category: document.getElementById('seminarCategory').value,
+                date: document.getElementById('seminarDate').value,
+                time: document.getElementById('seminarTime').value,
+                duration: parseInt(document.getElementById('seminarDuration').value),
+                location: document.getElementById('seminarLocation').value,
+                quota: parseInt(document.getElementById('seminarQuota').value),
+                price: parseInt(document.getElementById('seminarPrice').value),
+                earlyBirdPrice: parseInt(document.getElementById('seminarEarlyBird').value) || null,
+                earlyBirdDate: document.getElementById('seminarEarlyBirdDate').value || null,
+                description: document.getElementById('seminarDescription').value,
+                image: document.getElementById('seminarImage').value || getDefaultImage(document.getElementById('seminarCategory').value),
+                speakers: Array.from(document.getElementById('seminarSpeakers').selectedOptions).map(option => option.value),
+                registered: 0,
+                status: 'active',
+                featured: seminars.length < 3, // Auto-featured if less than 3 seminars
+                createdAt: new Date().toISOString()
+            };
+
+            seminars.push(seminarData);
+            saveToStorage('seminars', seminars);
+            
+            // Update views
+            loadSeminars();
+            loadSeminarsTable();
+            updateStats();
+            
+            // Close modal and reset form
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addSeminarModal'));
+            modal.hide();
+            form.reset();
+            
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: 'Seminar berhasil ditambahkan.',
+                timer: 2000
+            });
+            
+            logAction('ADD_SEMINAR', { id: seminarData.id, title: seminarData.title });
+            return false;
+        }
+
+        function getDefaultImage(category) {
+            const images = {
+                'technology': 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                'business': 'https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                'marketing': 'https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                'education': 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                'health': 'https://images.unsplash.com/photo-1551601651-2a8555f1a136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80',
+                'finance': 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'
+            };
+            return images[category] || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80';
+        }
+
+        function deleteSeminar(id) {
+            const seminar = seminars.find(s => s.id === id);
+            if (!seminar) return;
+
+            // Check for existing registrations
+            const hasRegistrations = registrations.some(reg => reg.seminarId === id);
+            
+            if (hasRegistrations) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Tidak Dapat Dihapus',
+                    text: 'Seminar memiliki peserta terdaftar. Batalkan seminar terlebih dahulu.',
+                    timer: 3000
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Hapus Seminar?',
+                text: "Data seminar akan dihapus permanen!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    seminars = seminars.filter(s => s.id !== id);
+                    saveToStorage('seminars', seminars);
+                    
+                    loadSeminars();
+                    loadSeminarsTable();
+                    updateStats();
+                    
+                    Swal.fire(
+                        'Terhapus!',
+                        'Seminar berhasil dihapus.',
+                        'success'
+                    );
+                    logAction('DELETE_SEMINAR', { id, title: seminar.title });
+                }
+            });
+        }
+
+        function showSeminarDetail(id) {
+            const seminar = seminars.find(s => s.id === id);
+            if (!seminar) return;
+
+            const speakerList = seminar.speakers.map(speakerId => {
+                const speaker = speakers.find(s => s.id === speakerId);
+                return speaker ? speaker.name : 'Unknown Speaker';
+            }).join(', ');
+
+            Swal.fire({
+                title: seminar.title,
+                html: `
+                    <div class="text-start">
+                        <div class="mb-3">
+                            <img src="${seminar.image}" class="img-fluid rounded" alt="${seminar.title}" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'">
+                        </div>
+                        <p><strong>Kode:</strong> ${seminar.code}</p>
+                        <p><strong>Tanggal:</strong> ${formatDate(seminar.date)} ${seminar.time} WIB</p>
+                        <p><strong>Durasi:</strong> ${seminar.duration} jam</p>
+                        <p><strong>Lokasi:</strong> ${seminar.location}</p>
+                        <p><strong>Kategori:</strong> ${getCategoryLabel(seminar.category)}</p>
+                        <p><strong>Kuota:</strong> ${seminar.registered}/${seminar.quota} peserta</p>
+                        <p><strong>Harga:</strong> ${formatCurrency(seminar.price)}</p>
+                        ${seminar.earlyBirdPrice ? `
+                            <p><strong>Early Bird:</strong> ${formatCurrency(seminar.earlyBirdPrice)} 
+                            (sampai ${formatDate(seminar.earlyBirdDate)})</p>
+                        ` : ''}
+                        <p><strong>Deskripsi:</strong> ${seminar.description}</p>
+                        ${speakerList ? `<p><strong>Pembicara:</strong> ${speakerList}</p>` : ''}
+                    </div>
+                `,
+                showCloseButton: true,
+                showConfirmButton: false,
+                width: '600px'
+            });
+        }
+
+        // ==================== REGISTRATION FUNCTIONS ====================
         function startRegistration(seminarId) {
             const seminar = seminars.find(s => s.id === seminarId);
             if (!seminar) return;
@@ -1429,59 +2815,50 @@
             document.getElementById('selectedSeminarTitle').textContent = seminar.title;
             document.getElementById('selectedSeminarInfo').textContent = 
                 `${formatDate(seminar.date)} | ${seminar.time} WIB | ${seminar.location}`;
-            
-            // Reset form
-            document.getElementById('regName').value = '';
-            document.getElementById('regEmail').value = '';
-            document.getElementById('regPhone').value = '';
-            document.getElementById('regInstitution').value = '';
-            document.getElementById('regPosition').value = '';
-            document.getElementById('regTicketCount').value = '1';
-            document.getElementById('termsCheck').checked = false;
+            document.getElementById('selectedSeminarCategory').textContent = getCategoryLabel(seminar.category);
+            document.getElementById('selectedSeminarCategory').className = `badge bg-${getCategoryColor(seminar.category)}`;
+            document.getElementById('selectedSeminarSeats').textContent = `Tersisa: ${seminar.quota - seminar.registered} kursi`;
             
             // Calculate and update pricing
-            updatePaymentSummary();
+            updateRegistrationPricing();
+            
+            // Reset form
+            document.getElementById('registrationForm').reset();
             
             const modal = new bootstrap.Modal(document.getElementById('registrationModal'));
             modal.show();
         }
 
-        function updatePaymentSummary() {
-            if (!selectedSeminarId) return;
-            
+        function updateRegistrationPricing() {
             const seminar = seminars.find(s => s.id === selectedSeminarId);
             if (!seminar) return;
 
             const ticketCount = parseInt(document.getElementById('regTicketCount').value) || 1;
-            const isEarlyBird = new Date() < new Date(seminar.date);
-            const pricePerTicket = isEarlyBird && seminar.earlyBirdPrice ? seminar.earlyBirdPrice : seminar.price;
-            const discount = isEarlyBird && seminar.earlyBirdPrice ? seminar.price - seminar.earlyBirdPrice : 0;
+            const isEarlyBird = seminar.earlyBirdPrice && new Date(seminar.earlyBirdDate) > new Date();
+            const pricePerTicket = isEarlyBird ? seminar.earlyBirdPrice : seminar.price;
             const subtotal = pricePerTicket * ticketCount;
             const tax = subtotal * 0.1;
             const total = subtotal + tax;
 
-            document.getElementById('ticketPrice').textContent = `Rp ${pricePerTicket.toLocaleString()}`;
+            document.getElementById('ticketPrice').textContent = formatCurrency(pricePerTicket);
             document.getElementById('ticketCount').textContent = ticketCount;
-            document.getElementById('earlyBirdDiscount').textContent = discount > 0 ? 
-                `- Rp ${(discount * ticketCount).toLocaleString()}` : '- Rp 0';
-            document.getElementById('taxAmount').textContent = `Rp ${tax.toLocaleString()}`;
-            document.getElementById('totalPayment').textContent = `Rp ${total.toLocaleString()}`;
+            document.getElementById('subtotalAmount').textContent = formatCurrency(subtotal);
+            document.getElementById('taxAmount').textContent = formatCurrency(tax);
+            document.getElementById('totalPayment').textContent = formatCurrency(total);
         }
 
         function submitRegistration() {
-            if (!selectedSeminarId) return;
-
             const seminar = seminars.find(s => s.id === selectedSeminarId);
             if (!seminar) return;
 
-            const name = document.getElementById('regName').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const phone = document.getElementById('regPhone').value.trim();
-            const institution = document.getElementById('regInstitution').value.trim();
-            const position = document.getElementById('regPosition').value.trim();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value;
+            const institution = document.getElementById('regInstitution').value;
+            const position = document.getElementById('regPosition').value;
             const ticketCount = parseInt(document.getElementById('regTicketCount').value);
-            const agreeTerms = document.getElementById('termsCheck').checked;
-
+            
+            // Validate
             if (!name || !email || !phone || !institution) {
                 Swal.fire({
                     icon: 'error',
@@ -1492,30 +2869,32 @@
                 return;
             }
 
-            if (!agreeTerms) {
+            if (ticketCount > (seminar.quota - seminar.registered)) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Persetujuan Diperlukan',
-                    text: 'Anda harus menyetujui syarat dan ketentuan untuk melanjutkan.',
+                    title: 'Kuota Tidak Cukup',
+                    text: `Hanya tersisa ${seminar.quota - seminar.registered} kursi.`,
                     timer: 3000
                 });
                 return;
             }
 
-            // Calculate payment
-            const isEarlyBird = new Date() < new Date(seminar.date);
-            const pricePerTicket = isEarlyBird && seminar.earlyBirdPrice ? seminar.earlyBirdPrice : seminar.price;
-            const total = (pricePerTicket * ticketCount) * 1.1; // Including 10% tax
+            // Calculate pricing
+            const isEarlyBird = seminar.earlyBirdPrice && new Date(seminar.earlyBirdDate) > new Date();
+            const pricePerTicket = isEarlyBird ? seminar.earlyBirdPrice : seminar.price;
+            const subtotal = pricePerTicket * ticketCount;
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
 
-            // Create registration code
-            const regCode = 'REG' + String(registrations.length + 1).padStart(4, '0');
+            // Create registration
+            const registrationId = `REG${new Date().getFullYear()}${String(registrations.length + 1).padStart(4, '0')}`;
+            const participantId = `P${String(participants.length + 1).padStart(3, '0')}`;
 
-            // Create new registration
             const newRegistration = {
-                id: registrations.length > 0 ? Math.max(...registrations.map(r => r.id)) + 1 : 1,
-                code: regCode,
+                id: registrationId,
                 seminarId: seminar.id,
                 seminarTitle: seminar.title,
+                participantId: participantId,
                 participantName: name,
                 participantEmail: email,
                 participantPhone: phone,
@@ -1523,9 +2902,12 @@
                 position: position,
                 ticketCount: ticketCount,
                 amount: total,
+                subtotal: subtotal,
+                tax: tax,
                 status: 'pending',
                 paymentStatus: 'unpaid',
-                registrationDate: new Date().toISOString().split('T')[0]
+                registrationDate: new Date().toISOString().split('T')[0],
+                paymentDeadline: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
             };
 
             registrations.push(newRegistration);
@@ -1535,27 +2917,29 @@
             seminar.registered += ticketCount;
             saveToStorage('seminars', seminars);
 
-            // Add to participants if not exists
+            // Add/update participant
             let participant = participants.find(p => p.email === email);
             if (!participant) {
                 participant = {
-                    id: participants.length > 0 ? Math.max(...participants.map(p => p.id)) + 1 : 1,
+                    id: participantId,
                     name: name,
                     email: email,
                     phone: phone,
                     institution: institution,
                     position: position,
-                    seminarCount: 1
+                    seminarCount: 1,
+                    totalSpent: total,
+                    joinDate: new Date().toISOString().split('T')[0]
                 };
                 participants.push(participant);
-                saveToStorage('participants', participants);
             } else {
                 participant.seminarCount++;
-                saveToStorage('participants', participants);
+                participant.totalSpent += total;
             }
+            saveToStorage('participants', participants);
 
             // Update views
-            loadSeminars(currentPage);
+            loadSeminars();
             updateStats();
             
             // Close modal
@@ -1567,13 +2951,333 @@
                 title: 'Pendaftaran Berhasil!',
                 html: `
                     <div class="text-start">
-                        <p><strong>Kode Pendaftaran:</strong> ${newRegistration.code}</p>
-                        <p><strong>Nama:</strong> ${name}</p>
-                        <p><strong>Seminar:</strong> ${seminar.title}</p>
-                        <p><strong>Jumlah Tiket:</strong> ${ticketCount}</p>
-                        <p><strong>Total Pembayaran:</strong> Rp ${total.toLocaleString()}</p>
+                        <p><strong>Kode Pendaftaran:</strong> ${newRegistration.id}</p>
+                        <p><strong>Total Pembayaran:</strong> ${formatCurrency(total)}</p>
+                        <p><strong>Status:</strong> Menunggu Pembayaran</p>
+                        <p><strong>Batas Pembayaran:</strong> 24 jam dari sekarang</p>
                         <hr>
-                        <div class="alert alert-info">
-                            <h6><i class="fas fa-info-circle me-2"></i>Instruksi Pembayaran:</h6>
-                            <ol class="mb-0">
-                                <li>Transfer ke BCA 123-456-7890 a
+                        <p class="small text-muted">
+                            <strong>Instruksi Pembayaran:</strong><br>
+                            1. Transfer ke ${settings.bankAccount || 'BCA 123-456-7890 a.n. SeminarPro'}<br>
+                            2. Jumlah: ${formatCurrency(total)}<br>
+                            3. Beri keterangan: ${newRegistration.id}<br>
+                            4. Konfirmasi pembayaran via WhatsApp: ${settings.systemPhone || '0812-3456-7890'}
+                        </p>
+                    </div>
+                `,
+                icon: 'success',
+                confirmButtonText: 'OK',
+                width: '500px'
+            });
+
+            logAction('NEW_REGISTRATION', { 
+                registrationId: newRegistration.id,
+                seminar: seminar.title,
+                amount: total 
+            });
+        }
+
+        function loadRecentRegistrations() {
+            const tbody = document.getElementById('recentRegistrations');
+            tbody.innerHTML = '';
+
+            const recent = registrations.slice(-10).reverse(); // Get last 10 registrations
+            
+            if (recent.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            <i class="fas fa-clipboard-list fa-2x mb-2"></i><br>
+                            Belum ada pendaftaran
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            recent.forEach(reg => {
+                const statusBadge = reg.status === 'confirmed' 
+                    ? '<span class="badge bg-success">Terkonfirmasi</span>'
+                    : '<span class="badge bg-warning">Menunggu</span>';
+
+                const row = `
+                    <tr>
+                        <td><strong>${reg.id}</strong></td>
+                        <td>${reg.participantName}</td>
+                        <td>${reg.seminarTitle}</td>
+                        <td>${formatDate(reg.registrationDate)}</td>
+                        <td>${statusBadge}</td>
+                        <td>${formatCurrency(reg.amount)}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewRegistration('${reg.id}')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // ==================== CALENDAR FUNCTIONS ====================
+        function initializeCalendar() {
+            const calendarEl = document.getElementById('calendarView');
+            
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: seminars.map(seminar => ({
+                    title: seminar.title,
+                    start: `${seminar.date}T${seminar.time}`,
+                    end: `${seminar.date}T${parseInt(seminar.time.split(':')[0]) + seminar.duration}:${seminar.time.split(':')[1]}`,
+                    color: getCategoryColor(seminar.category),
+                    extendedProps: {
+                        seminarId: seminar.id,
+                        location: seminar.location
+                    }
+                })),
+                eventClick: function(info) {
+                    const seminarId = info.event.extendedProps.seminarId;
+                    showSeminarDetail(seminarId);
+                },
+                locale: 'id',
+                buttonText: {
+                    today: 'Hari Ini',
+                    month: 'Bulan',
+                    week: 'Minggu',
+                    day: 'Hari'
+                }
+            });
+
+            calendar.render();
+        }
+
+        // ==================== CHART FUNCTIONS ====================
+        function loadCharts() {
+            // Registration Chart
+            const regCtx = document.getElementById('registrationChart').getContext('2d');
+            if (charts.registration) charts.registration.destroy();
+            
+            // Generate sample data for last 30 days
+            const dates = [];
+            const data = [];
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                dates.push(date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }));
+                
+                // Count registrations for this date
+                const count = registrations.filter(reg => {
+                    const regDate = new Date(reg.registrationDate);
+                    return regDate.toDateString() === date.toDateString();
+                }).length;
+                data.push(count);
+            }
+
+            charts.registration = new Chart(regCtx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: 'Pendaftaran Harian',
+                        data: data,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Payment Chart
+            const paymentCtx = document.getElementById('paymentChart').getContext('2d');
+            if (charts.payment) charts.payment.destroy();
+            
+            const paidCount = registrations.filter(reg => reg.paymentStatus === 'paid').length;
+            const unpaidCount = registrations.filter(reg => reg.paymentStatus === 'unpaid').length;
+            
+            charts.payment = new Chart(paymentCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Lunas', 'Belum Bayar'],
+                    datasets: [{
+                        data: [paidCount, unpaidCount],
+                        backgroundColor: ['#10b981', '#ef4444'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+        function scrollToSeminars() {
+            document.getElementById('seminarsSection').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function showCalendar() {
+            if (!isAdmin) {
+                switchToAdmin();
+                setTimeout(() => showSection('calendar'), 1000);
+            } else {
+                showSection('calendar');
+            }
+        }
+
+        function showProfile() {
+            Swal.fire({
+                title: 'Profil Pengguna',
+                html: `
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-user-circle fa-4x text-primary"></i>
+                        </div>
+                        <p><strong>Nama:</strong> ${currentUser || 'Admin Sistem'}</p>
+                        <p><strong>Role:</strong> ${isAdmin ? 'Administrator' : 'Pengguna'}</p>
+                        <p><strong>Login Terakhir:</strong> ${new Date().toLocaleString()}</p>
+                        ${isAdmin ? `
+                            <hr>
+                            <p><strong>Status Sistem:</strong> Aktif</p>
+                            <p><strong>Total Data:</strong> ${seminars.length + registrations.length + participants.length} records</p>
+                        ` : ''}
+                    </div>
+                `,
+                showCloseButton: true,
+                showConfirmButton: false,
+                width: '400px'
+            });
+        }
+
+        function refreshDashboard() {
+            updateStats();
+            loadRecentRegistrations();
+            loadCharts();
+            Swal.fire({
+                icon: 'success',
+                title: 'Dashboard Diperbarui',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
+
+        function refreshViews() {
+            loadSeminars();
+            loadSeminarsTable();
+            loadRecentRegistrations();
+            updateStats();
+        }
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+
+            // Initialize default data
+            initializeDefaultData();
+
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+            const oneMonthAgoStr = oneMonthAgo.toISOString().split('T')[0];
+
+            document.getElementById('reportFromDate').value = oneMonthAgoStr;
+            document.getElementById('reportToDate').value = today;
+
+            // Populate seminar filter in reports
+            const seminarSelect = document.getElementById('reportSeminar');
+            seminars.forEach(seminar => {
+                seminarSelect.innerHTML += `<option value="${seminar.id}">${seminar.title}</option>`;
+            });
+
+            // Load seminars
+            loadSeminars();
+
+            // Back to top button
+            window.addEventListener('scroll', function() {
+                const backToTopBtn = document.getElementById('backToTop');
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            document.getElementById('backToTop').addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+
+        // ==================== HELPER FUNCTIONS ====================
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+        }
+
+        function exportData() {
+            backupDatabase();
+        }
+
+        function importData() {
+            restoreDatabase();
+        }
+
+        function showSettings() {
+            if (!isAdmin) {
+                switchToAdmin();
+            }
+            showSection('settings');
+        }
+
+        // Note: Due to character limit, some advanced features like full DataTables implementation,
+        // complete report generation, and certificate generation are simplified.
+        // These can be expanded based on specific requirements.
+
+        console.log('SeminarPro System v2.0.0 initialized');
+        console.log('Developed by Kelompok 1 - 2 Logistik D');
+        console.log('Mata Kuliah: Basis Data dan Pemrograman');
+    </script>
+</body>
+</html>
